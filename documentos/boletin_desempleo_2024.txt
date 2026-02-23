@@ -1,0 +1,180 @@
+BOLETÍN TÉCNICO — MERCADO LABORAL COLOMBIA
+Tercer Trimestre 2024 (julio – septiembre 2024)
+Departamento Administrativo Nacional de Estadística — DANE
+Fecha de publicación: noviembre 2024
+
+============================================================
+1. RESUMEN EJECUTIVO
+============================================================
+
+Durante el tercer trimestre de 2024 (julio – septiembre), la tasa de desempleo
+nacional de Colombia se ubicó en 10,8%, cifra que representa una disminución de
+0,4 puntos porcentuales frente al mismo período del año anterior (11,2% en Q3 2023).
+La tasa global de participación (TGP) fue de 63,1%, mientras que la tasa de ocupación
+alcanzó el 56,3%.
+
+El mercado laboral colombiano continúa su proceso de recuperación gradual luego del
+choque generado por la pandemia de COVID-19 en 2020, cuando la tasa de desempleo
+llegó a un máximo histórico de 21,4% en el segundo trimestre de ese año.
+
+El número total de ocupados en el trimestre fue de 22,6 millones de personas, de las
+cuales el 57,8% son hombres y el 42,2% son mujeres.
+
+============================================================
+2. TASA DE DESEMPLEO POR SEXO
+============================================================
+
+La brecha de desempleo entre hombres y mujeres persiste en Colombia. En Q3 2024:
+
+- Hombres: tasa de desempleo 8,3%
+- Mujeres: tasa de desempleo 14,1%
+
+Esta diferencia de 5,8 puntos porcentuales refleja las brechas estructurales en el
+mercado laboral colombiano, relacionadas con la distribución del trabajo de cuidado
+no remunerado, la segregación sectorial y las diferencias salariales.
+
+============================================================
+3. TASA DE DESEMPLEO POR DEPARTAMENTO
+============================================================
+
+El análisis departamental revela importantes disparidades territoriales en Colombia.
+Los departamentos con mayor tasa de desempleo en Q3 2024 son:
+
+1. Chocó: 20,1%
+   El Chocó continúa siendo el departamento con mayor desempleo del país. Su economía
+   depende principalmente de la minería artesanal, la agricultura de subsistencia y los
+   recursos del Estado. La falta de infraestructura vial y la débil conectividad limitan
+   el desarrollo de actividades productivas formales.
+
+2. Quindío: 17,3%
+   El eje cafetero enfrenta una crisis estructural del empleo relacionada con la
+   reducción de la mano de obra en el sector cafetero por la tecnificación. El sector
+   turístico no ha logrado compensar completamente la pérdida de empleos agrícolas.
+
+3. La Guajira: 16,8%
+   La Guajira presenta altos niveles de informalidad y baja cobertura del mercado
+   laboral formal. La economía depende de la minería del carbón (Cerrejón) y la
+   actividad pesquera artesanal, sectores con empleo intermitente.
+
+4. Norte de Santander: 15,9%
+   La región enfrenta desafíos relacionados con la migración venezolana que aumenta
+   la oferta laboral, y la baja dinámica del sector industrial local.
+
+5. Cauca: 15,2%
+   El Cauca combina alta informalidad rural con bajo desarrollo industrial. El sector
+   agropecuario predomina pero genera empleos de baja calidad y alta estacionalidad.
+
+6. Córdoba: 14,7%
+
+7. Sucre: 14,3%
+
+8. Risaralda: 13,8%
+
+9. Nariño: 13,1%
+
+10. Valle del Cauca: 12,4%
+
+Los departamentos con menor tasa de desempleo en Q3 2024 son:
+
+1. Casanare: 6,8%
+   La economía petrolera y agroindustrial del departamento genera empleo formal estable.
+
+2. Cundinamarca: 7,1%
+   La proximidad a Bogotá y la diversificación industrial favorecen el empleo.
+
+3. Meta: 7,4%
+
+4. Santander: 7,9%
+
+5. Antioquia: 8,5%
+   Medellín y el Valle de Aburrá concentran la industria manufacturera, el sector
+   financiero y los servicios empresariales, generando empleos formales de calidad.
+
+Bogotá D.C.: 9,7%
+   La capital del país, con su diversificada economía de servicios, finanzas y comercio,
+   registra una tasa de desempleo por debajo del promedio nacional.
+
+============================================================
+4. EVOLUCIÓN HISTÓRICA 2020-2024
+============================================================
+
+La pandemia de COVID-19 generó el mayor choque laboral de la historia reciente de
+Colombia. A continuación se presenta la evolución de la tasa de desempleo nacional:
+
+Año 2020:
+- Q1 2020: 12,6% (inicio pandemia — cuarentena estricta desde marzo)
+- Q2 2020: 21,4% (MÁXIMO HISTÓRICO — cuarentena total, cierre de actividades)
+- Q3 2020: 16,8% (reapertura gradual)
+- Q4 2020: 14,7% (recuperación incipiente)
+
+Año 2021:
+- Q1 2021: 15,1% (segunda ola COVID)
+- Q2 2021: 14,4% (inicio reactivación económica)
+- Q3 2021: 12,3% (aceleración de la recuperación)
+- Q4 2021: 11,1% (regreso a niveles pre-pandemia)
+
+Año 2022:
+- Q1 2022: 13,0% (paro nacional afecta empleo)
+- Q2 2022: 11,7%
+- Q3 2022: 10,9%
+- Q4 2022: 10,6%
+
+Año 2023:
+- Q1 2023: 12,8% (estacionalidad típica del primer trimestre)
+- Q2 2023: 11,2%
+- Q3 2023: 11,2%
+- Q4 2023: 10,8%
+
+Año 2024:
+- Q1 2024: 12,1% (primer trimestre siempre más alto por estacionalidad)
+- Q2 2024: 11,0%
+- Q3 2024: 10,8% (dato más reciente)
+
+============================================================
+5. COMPOSICIÓN DEL EMPLEO POR SECTOR ECONÓMICO
+============================================================
+
+En Q3 2024, los sectores con mayor participación en el empleo total fueron:
+
+1. Comercio, hoteles y restaurantes: 27,4% del total de ocupados
+2. Servicios comunales, sociales y personales: 20,1%
+3. Agricultura, ganadería y pesca: 15,8%
+4. Industria manufacturera: 12,6%
+5. Construcción: 7,9%
+6. Transporte y comunicaciones: 7,3%
+7. Servicios financieros: 4,8%
+8. Minería: 2,1%
+9. Otros: 2,0%
+
+============================================================
+6. INFORMALIDAD LABORAL
+============================================================
+
+La informalidad laboral continúa siendo uno de los mayores desafíos del mercado
+laboral colombiano. En Q3 2024, el 56,3% de los ocupados trabaja en condiciones
+de informalidad (sin acceso a seguridad social, prestaciones sociales ni contrato
+laboral formal).
+
+Los departamentos con mayor informalidad:
+- Chocó: 82,4%
+- La Guajira: 78,9%
+- Córdoba: 76,1%
+- Sucre: 75,3%
+
+Los departamentos con menor informalidad:
+- Bogotá: 38,7%
+- Santander: 44,2%
+- Antioquia: 47,8%
+
+============================================================
+7. METODOLOGÍA Y FUENTE
+============================================================
+
+Los datos provienen de la Gran Encuesta Integrada de Hogares (GEIH), aplicada de
+forma continua en los 33 departamentos del país y el Distrito Capital de Bogotá.
+El tamaño de muestra trimestral supera las 200.000 personas.
+
+Para más información, consultar: www.dane.gov.co/mercado-laboral
+
+DANE — Departamento Administrativo Nacional de Estadística
+Bogotá D.C., Colombia — 2024

@@ -1,0 +1,195 @@
+CUENTAS NACIONALES — PRODUCTO INTERNO BRUTO (PIB)
+Colombia — Año 2024 (Estimación Preliminar)
+Departamento Administrativo Nacional de Estadística — DANE
+Fecha de publicación: febrero 2025
+
+============================================================
+1. RESUMEN EJECUTIVO
+============================================================
+
+El Producto Interno Bruto (PIB) de Colombia creció 1,8% en el año 2024, según
+la estimación preliminar del DANE. Este resultado supera el crecimiento de 2023
+(0,6%) pero permanece por debajo del potencial histórico de la economía colombiana
+(estimado entre 3% y 3,5% anual).
+
+El PIB nominal de Colombia en 2024 alcanzó los 1.542 billones de pesos colombianos
+(aproximadamente 370.000 millones de dólares), consolidando a Colombia como la
+cuarta economía más grande de América Latina.
+
+El PIB per cápita estimado para 2024 es de aproximadamente 7.200 dólares anuales
+(a precios corrientes), o 16.800 dólares ajustado por paridad de poder adquisitivo (PPP).
+
+============================================================
+2. CRECIMIENTO TRIMESTRAL DEL PIB 2024
+============================================================
+
+Variación anual del PIB por trimestre en 2024:
+
+Primer trimestre 2024 (Q1):   0,8% anual
+  La economía inició 2024 con crecimiento moderado, afectada por la desaceleración
+  del consumo privado y la alta tasa de interés real del Banco de la República.
+
+Segundo trimestre 2024 (Q2):  1,5% anual
+  La reactivación del sector construcción y el repunte del comercio contribuyeron
+  a una leve aceleración en el segundo trimestre.
+
+Tercer trimestre 2024 (Q3):   2,1% anual
+  El sector minero-energético lideró el crecimiento en el tercer trimestre, junto
+  con el dinamismo del sector agropecuario y los servicios financieros.
+
+Cuarto trimestre 2024 (Q4):   2,8% anual (estimación preliminar)
+  El cierre del año mostró aceleración del crecimiento, impulsado por el consumo
+  privado y la recuperación de la inversión privada.
+
+============================================================
+3. EVOLUCIÓN HISTÓRICA DEL PIB 2019-2024
+============================================================
+
+AÑO 2019: +3,3%
+Crecimiento sólido y por encima del promedio regional latinoamericano. Los motores
+principales fueron los servicios financieros, el comercio y la construcción.
+
+AÑO 2020: -6,8% (CONTRACCIÓN POR COVID-19)
+La pandemia generó la mayor caída del PIB colombiano desde que se tienen registros
+modernos. Las medidas de confinamiento paralizaron sectores enteros de la economía.
+Los sectores más afectados:
+  - Hoteles y restaurantes: -31,2%
+  - Transporte y comunicaciones: -15,4%
+  - Entretenimiento y recreación: -29,8%
+  - Industria manufacturera: -8,6%
+Los sectores que crecieron:
+  - Agricultura: +2,8% (actividad esencial)
+  - Servicios financieros: +1,1%
+
+AÑO 2021: +10,7% (MAYOR CRECIMIENTO EN LA HISTORIA MODERNA)
+El rebote económico de 2021 fue el más intenso registrado en Colombia, impulsado por:
+  - Efecto base estadístico (comparación contra 2020 deprimido)
+  - Reactivación del comercio y la industria
+  - Inversión pública en infraestructura
+  - Normalización del consumo de los hogares
+El crecimiento trimestral más alto fue el Q2 2021 con +22,4% anual, el máximo de la serie.
+
+AÑO 2022: +7,3%
+Crecimiento robusto sostenido por el sector minero-energético (petróleo a precio alto),
+la construcción residencial y el sector financiero. Sin embargo, la alta inflación
+(13,12% anual) erosionó el poder adquisitivo de los hogares.
+
+AÑO 2023: +0,6%
+El crecimiento casi nulo de 2023 respondió a:
+  - Tasas de interés en máximos históricos (13,25%) que frenaron el crédito
+  - Caída de la demanda interna por la pérdida de poder adquisitivo
+  - Menor precio del petróleo frente a 2022
+  - Desaceleración del sector construcción
+Fue el año de menor crecimiento fuera de la crisis COVID.
+
+AÑO 2024: +1,8%
+La recuperación moderada reflejó el inicio del ciclo de reducción de tasas del Banco
+de la República y la resiliencia de sectores como servicios, comercio y agropecuario.
+
+============================================================
+4. PIB POR SECTORES ECONÓMICOS — 2024
+============================================================
+
+Contribución al crecimiento del PIB 2024 por grandes ramas de actividad:
+
+Sector agropecuario, silvicultura, caza y pesca:  +3,8%
+  El café, el banano y los productos florícolas registraron buenos resultados de
+  exportación. El sector pecuario creció por la demanda doméstica de carnes.
+
+Sector de minas y canteras (petróleo, carbón, oro): +4,2%
+  La producción de petróleo se recuperó parcialmente. Colombia produjo en promedio
+  780.000 barriles/día en 2024. El carbón mantuvo altos volúmenes de exportación.
+
+Industria manufacturera:  +1,1%
+  La industria recuperó parte del terreno perdido en 2023. Los subsectores de
+  alimentos y bebidas y la industria química lideraron el crecimiento.
+
+Construcción:  +2,5%
+  Las obras civiles (vías 4G y 5G) compensaron parcialmente la caída en la
+  construcción de vivienda nueva residencial.
+
+Comercio, hoteles y restaurantes:  +1,7%
+  El comercio minorista mostró leve recuperación. El turismo internacional
+  continuó en ascenso, con récord de visitantes extranjeros a Colombia.
+
+Transporte, almacenamiento y comunicaciones:  +2,3%
+
+Actividades financieras y de seguros:  +3,1%
+  El sistema financiero colombiano mostró solidez, con carteras que recuperaron
+  su dinámica pese al ciclo alcista de tasas.
+
+Servicios sociales, comunales y personales:  +2,0%
+
+Administración pública y defensa:  +1,5%
+
+Impuestos netos sobre los productos:  +0,9%
+
+============================================================
+5. DEMANDA AGREGADA — 2024
+============================================================
+
+Por el lado del gasto, el PIB de 2024 fue impulsado por:
+
+Consumo de los hogares (52% del PIB):  +1,2%
+  La recuperación del salario real (inflación en descenso) mejoró levemente el
+  consumo privado en la segunda mitad del año.
+
+Consumo del gobierno (16% del PIB):  +2,8%
+  El gasto público en salud, educación y transferencias sociales mantuvo dinamismo.
+
+Formación bruta de capital fijo — Inversión (21% del PIB):  +1,9%
+  La inversión privada se recuperó gradualmente con la reducción de tasas de interés.
+
+Exportaciones (14% del PIB):  +3,1%
+  Las exportaciones de petróleo, carbón, café y flores lideraron el crecimiento.
+
+Importaciones (reducción de la demanda importada):  -1,8%
+  La devaluación del peso y la debilidad del consumo redujeron las importaciones.
+
+============================================================
+6. PIB PER CÁPITA Y CONTEXTO REGIONAL
+============================================================
+
+PIB per cápita Colombia 2024 (a precios corrientes): aproximadamente 7.200 USD
+PIB per cápita ajustado por PPP: aproximadamente 16.800 USD
+
+Comparación con países de la región (PIB per cápita PPP 2024):
+  Chile:     27.500 USD
+  México:    23.100 USD
+  Brasil:    18.400 USD
+  Colombia:  16.800 USD
+  Perú:      15.200 USD
+  Ecuador:   13.800 USD
+
+Colombia es la cuarta economía más grande de América Latina por tamaño del PIB total,
+después de Brasil, México y Argentina.
+
+============================================================
+7. PERSPECTIVAS 2025
+============================================================
+
+El DANE y el Banco de la República proyectan un crecimiento del PIB de Colombia
+entre 2,5% y 3,2% para 2025, sustentado en:
+  - Continuación del ciclo de reducción de tasas de interés
+  - Recuperación del consumo privado con inflación en descenso
+  - Mayor ejecución del programa de obras de infraestructura 4G y 5G
+  - Recuperación de la inversión extranjera directa (IED)
+
+Los principales riesgos para el crecimiento son:
+  - Incertidumbre sobre las reformas tributaria y pensional
+  - Volatilidad del precio del petróleo y el tipo de cambio
+  - Condiciones climáticas adversas (fenómeno La Niña)
+
+============================================================
+8. METODOLOGÍA Y FUENTE
+============================================================
+
+Las Cuentas Nacionales de Colombia siguen el Sistema de Cuentas Nacionales 2008
+(SCN 2008) de Naciones Unidas. El año base para la medición a precios constantes
+es 2015. Los datos presentados como "estimación preliminar" están sujetos a
+revisión en publicaciones posteriores.
+
+Para más información: www.dane.gov.co/cuentas-nacionales
+
+DANE — Departamento Administrativo Nacional de Estadística
+Bogotá D.C., Colombia — 2025

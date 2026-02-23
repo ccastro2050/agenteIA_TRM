@@ -1,0 +1,217 @@
+RESULTADOS DEL CENSO NACIONAL DE POBLACIÓN Y VIVIENDA
+Colombia — 2023
+Departamento Administrativo Nacional de Estadística — DANE
+Fecha de publicación: julio 2024
+
+============================================================
+1. RESUMEN EJECUTIVO
+============================================================
+
+El Censo Nacional de Población y Vivienda de Colombia 2023 reveló que el país
+tiene 51,5 millones de habitantes, consolidando a Colombia como el tercer país
+más poblado de América del Sur, después de Brasil (215 millones) y Argentina
+(47 millones).
+
+La tasa de urbanización en Colombia alcanzó el 81,1%, reflejando la intensa
+migración rural-urbana de las últimas décadas. El 81% de los colombianos vive
+en centros urbanos, mientras que el 19% habita en zonas rurales dispersas.
+
+La densidad de población promedio nacional es de 45,2 habitantes por km²,
+aunque con grandes variaciones territoriales: desde más de 4.000 hab/km² en
+Bogotá hasta menos de 5 hab/km² en los departamentos de la Amazonía.
+
+Este censo es el más completo en la historia del DANE, con cobertura del 97,8%
+del territorio nacional y la incorporación de tecnologías digitales de captura.
+
+============================================================
+2. POBLACIÓN POR DEPARTAMENTO — 2023
+============================================================
+
+Los departamentos con mayor población en 2023:
+
+1. Bogotá D.C.: 8.740.000 habitantes
+   La capital sigue siendo por mucho el municipio más poblado de Colombia.
+   Su área metropolitana, incluyendo municipios de Cundinamarca, supera los
+   11 millones de habitantes. Bogotá concentra el 17% de la población total del país.
+
+2. Antioquia: 7.120.000 habitantes
+   El departamento más poblado después de Bogotá. Medellín y su área metropolitana
+   (Valle de Aburrá) concentran 4,2 millones de personas. El resto del departamento
+   incluye subregiones con alta densidad como el Oriente y el Suroeste antioqueño.
+
+3. Valle del Cauca: 5.030.000 habitantes
+   Cali y su área metropolitana concentran 3,8 millones de habitantes. El Valle
+   es el tercer departamento más poblado del país.
+
+4. Cundinamarca: 3.480.000 habitantes
+   El departamento que rodea a Bogotá ha experimentado crecimiento acelerado por
+   la expansión de la capital hacia municipios como Soacha, Facatativá y Zipaquirá.
+
+5. Atlántico: 2.850.000 habitantes
+   Barranquilla y su área metropolitana concentran 2,4 millones de personas.
+   El Atlántico es el principal departamento del Caribe colombiano.
+
+6. Bolívar: 2.410.000 habitantes (incluye Cartagena, 1,1 millones)
+
+7. Nariño: 1.920.000 habitantes
+
+8. Santander: 2.280.000 habitantes (incluye Bucaramanga, 580.000)
+
+9. Córdoba: 1.890.000 habitantes
+
+10. Tolima: 1.450.000 habitantes
+
+Los departamentos con menor población:
+
+Vaupés: 42.000 habitantes
+Guainía: 47.000 habitantes
+Vichada: 89.000 habitantes
+
+============================================================
+3. CRECIMIENTO DEMOGRÁFICO COMPARATIVO 2005-2023
+============================================================
+
+Colombia ha desacelerado su ritmo de crecimiento poblacional en las últimas décadas:
+
+Censo 2005: 41.468.000 habitantes
+Censo 2018: 48.258.000 habitantes
+Censo 2023: 51.500.000 habitantes
+
+Crecimiento 2018-2023: +3.242.000 personas (+6,7%)
+Tasa de crecimiento anual: 1,3% promedio anual (2018-2023)
+
+Este ritmo de crecimiento es inferior al registrado entre 2005 y 2018 (1,7% anual),
+reflejando la transición demográfica hacia menores tasas de natalidad.
+
+Departamentos con mayor crecimiento 2018-2023:
+1. Cundinamarca: +14,2% (expansión metropolitana de Bogotá)
+2. Bogotá D.C.: +9,8%
+3. Meta: +8,7%
+4. Atlántico: +8,1%
+
+Departamentos con menor crecimiento o decrecimiento:
+1. Chocó: +0,8%
+2. Nariño: +1,1%
+3. Arauca: +1,3%
+
+============================================================
+4. DISTRIBUCIÓN URBANA Y RURAL
+============================================================
+
+URBANO (81,1% de la población total):
+  - Ciudades de más de 1 millón de habitantes: Bogotá, Medellín, Cali, Barranquilla
+  - Ciudades de 500.000 a 1 millón: Cartagena, Cúcuta, Bucaramanga, Ibagué, Pereira
+  - Ciudades de 100.000 a 500.000: 32 municipios
+
+RURAL (18,9% de la población total):
+  La población rural se concentra principalmente en:
+  - Antioquia: 1,4 millones en zonas rurales
+  - Nariño: 1,2 millones en zonas rurales
+  - Cauca: 1,0 millones en zonas rurales
+  - Boyacá: 0,8 millones en zonas rurales
+
+La migración del campo a la ciudad continúa siendo un fenómeno estructural.
+Entre 2018 y 2023, la población urbana creció en 4,1 millones de personas,
+mientras la rural disminuyó en 870.000 personas.
+
+============================================================
+5. PIRÁMIDE POBLACIONAL — COLOMBIA 2023
+============================================================
+
+La pirámide poblacional de Colombia muestra una transición hacia el envejecimiento:
+
+Distribución por grupos de edad:
+
+0-14 años:     22,3% de la población (11,5 millones)
+15-29 años:    25,1% de la población (12,9 millones)
+30-44 años:    22,7% de la población (11,7 millones)
+45-59 años:    16,8% de la población (8,7 millones)
+60-74 años:     9,8% de la población (5,0 millones)
+75+ años:       3,3% de la población (1,7 millones)
+
+La edad mediana de la población colombiana es de 33 años en 2023,
+superior a los 29 años registrados en el censo de 2005.
+
+Distribución por sexo:
+  Hombres: 49,6% (25,5 millones)
+  Mujeres: 50,4% (25,9 millones)
+
+============================================================
+6. COMPOSICIÓN ÉTNICA
+============================================================
+
+El censo 2023 incluyó preguntas de autorreconocimiento étnico y cultural:
+
+Mestizo y blanco (no se autorreconocen en grupo étnico): 67,1%
+Afrocolombianos, negros, mulatos, palenqueros, raizales:  9,7%
+Indígenas (comunidades originarias):                       4,3%
+Gitanos (Rrom):                                            0,1%
+Sin autorreconocimiento étnico específico:                18,8%
+
+Los departamentos con mayor proporción de población indígena:
+- Vaupés: 83,2%
+- Guainía: 71,4%
+- La Guajira: 48,7% (Wayuu es el pueblo más numeroso de Colombia)
+- Cauca: 27,3%
+
+Los departamentos con mayor proporción de población afrocolombiana:
+- Chocó: 79,8%
+- San Andrés y Providencia: 57,3%
+- Bolívar: 18,4%
+
+============================================================
+7. VIVIENDA Y HOGARES
+============================================================
+
+El censo registró 14,9 millones de viviendas en Colombia, de las cuales:
+  - Viviendas propias: 42,3%
+  - Viviendas en arriendo: 37,6%
+  - Viviendas en condición de tenencia informal: 20,1%
+
+Déficit habitacional cuantitativo (hogares sin vivienda): 1,28 millones
+Déficit habitacional cualitativo (viviendas en condición inadecuada): 2,4 millones
+
+Promedio de personas por hogar: 3,1 (disminuyó desde 3,8 en 2005)
+
+Cobertura de servicios públicos en viviendas:
+  - Acueducto: 91,3%
+  - Energía eléctrica: 97,8%
+  - Alcantarillado: 83,6%
+  - Gas natural domiciliario: 64,2%
+  - Internet en el hogar: 61,4%
+
+============================================================
+8. PROYECCIONES DE POBLACIÓN 2025-2035
+============================================================
+
+Con base en el censo 2023, el DANE proyecta la siguiente evolución demográfica:
+
+2025: 52,2 millones de habitantes
+2030: 54,8 millones de habitantes
+2035: 57,1 millones de habitantes
+
+Se proyecta que la tasa de crecimiento natural (nacimientos menos defunciones)
+continúe declinando, pasando de 1,1% anual (2023) a 0,8% anual (2030).
+
+El proceso de envejecimiento demográfico se acelerará: para 2035, el 15,8% de la
+población tendrá 60 o más años, frente al 13,1% actual.
+
+Los departamentos con mayor envejecimiento proyectado para 2035:
+1. Bogotá D.C.: 18,2% mayores de 60 años
+2. Valle del Cauca: 17,9%
+3. Quindío: 19,4%
+
+============================================================
+9. METODOLOGÍA Y FUENTE
+============================================================
+
+El Censo Nacional de Población y Vivienda 2023 fue el primero en la historia
+del DANE en realizarse con captura digital en tiempo real mediante tabletas.
+Se realizaron 14,8 millones de encuestas, con cobertura del 97,8% del territorio.
+Los datos presentados son resultados definitivos después del proceso de crítica
+y consistencia de la información.
+
+Para más información: www.dane.gov.co/censo-2023
+
+DANE — Departamento Administrativo Nacional de Estadística
+Bogotá D.C., Colombia — 2024

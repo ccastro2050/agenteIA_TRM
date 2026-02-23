@@ -1,0 +1,163 @@
+BOLETÍN TÉCNICO — ÍNDICE DE PRECIOS AL CONSUMIDOR (IPC)
+Diciembre 2024 — Resultado Anual
+Departamento Administrativo Nacional de Estadística — DANE
+Fecha de publicación: enero 2025
+
+============================================================
+1. RESUMEN EJECUTIVO
+============================================================
+
+En diciembre de 2024, el Índice de Precios al Consumidor (IPC) de Colombia registró
+una variación anual de 5,17%, cifra que representa la inflación más baja desde el
+año 2021 y evidencia el éxito de la política monetaria restrictiva del Banco de la
+República en el control de la inflación.
+
+Durante 2024, la inflación mensual promedio fue de 0,38%, con el mes de mayor
+variación en enero (0,69%) y el de menor variación en agosto (0,18%).
+
+Comparado con el año anterior, la inflación en Colombia evolucionó así:
+- Diciembre 2022: 13,12% anual (máximo histórico reciente)
+- Diciembre 2023: 9,28% anual
+- Diciembre 2024: 5,17% anual (dato más reciente)
+
+============================================================
+2. VARIACIÓN MENSUAL POR MES EN 2024
+============================================================
+
+Mes a mes, el IPC en Colombia durante 2024 registró las siguientes variaciones:
+
+Enero 2024:    0,69% mensual  |  8,35% anual
+Febrero 2024:  0,62% mensual  |  7,74% anual
+Marzo 2024:    0,55% mensual  |  7,36% anual
+Abril 2024:    0,48% mensual  |  7,16% anual
+Mayo 2024:     0,44% mensual  |  6,98% anual
+Junio 2024:    0,40% mensual  |  6,71% anual
+Julio 2024:    0,35% mensual  |  6,48% anual
+Agosto 2024:   0,18% mensual  |  6,12% anual  (mes de menor inflación en 2024)
+Septiembre 2024: 0,32% mensual | 5,81% anual
+Octubre 2024:  0,28% mensual  |  5,54% anual
+Noviembre 2024: 0,34% mensual |  5,41% anual
+Diciembre 2024: 0,31% mensual |  5,17% anual
+
+============================================================
+3. EVOLUCIÓN HISTÓRICA 2020-2024
+============================================================
+
+Colombia vivió un período de alta inflación entre 2021 y 2023, como resultado de
+la reactivación económica post-COVID, los choques en cadenas de suministro globales,
+la crisis energética internacional y la depreciación del peso colombiano.
+
+INFLACIÓN ANUAL POR AÑO (variación acumulada diciembre a diciembre):
+
+2020: 1,61%
+El año de la pandemia registró la inflación más baja en décadas. La caída de la
+demanda interna por las cuarentenas, el desplome de los precios del petróleo y la
+contracción económica global mantuvieron los precios controlados.
+
+2021: 5,62%
+El inicio de la recuperación económica global generó presiones inflacionarias.
+Los cuellos de botella en las cadenas de suministro y el aumento de los precios
+de materias primas impulsaron la inflación al alza.
+
+2022: 13,12% (MÁXIMO HISTÓRICO RECIENTE)
+El año 2022 registró la inflación más alta de Colombia en los últimos 24 años.
+Los factores determinantes fueron:
+  - Invasión de Rusia a Ucrania → disparó precios de energía y alimentos
+  - Depreciación del peso colombiano (TRM superó $4.900 COP/USD)
+  - Choques climáticos que afectaron la producción agrícola
+  - Inercia inflacionaria y expectativas desancladas
+
+El mes con mayor inflación mensual en 2022 fue mayo con 1,99% mensual.
+El mes con mayor inflación anual acumulada fue junio con 15,44% anual.
+
+2023: 9,28%
+El Banco de la República mantuvo la tasa de intervención en 13,25% durante el
+primer semestre de 2023 para controlar la inflación. La estrategia comenzó a
+mostrar resultados en el segundo semestre, con una desaceleración progresiva.
+
+2024: 5,17%
+La política monetaria restrictiva consolidó su efecto desinflacionario. El Banco
+de la República inició recortes de tasas a partir de diciembre de 2023, llevando
+la tasa de intervención de 13,25% a 9,50% a finales de 2024.
+
+============================================================
+4. IPC POR GRUPOS DE BIENES Y SERVICIOS — DICIEMBRE 2024
+============================================================
+
+El IPC se calcula sobre una canasta de 443 artículos agrupados en divisiones.
+Las variaciones anuales por grupo en diciembre de 2024 fueron:
+
+Alimentos y bebidas no alcohólicas:          4,38%
+  Este grupo tiene el mayor peso en la canasta del hogar colombiano (28,2%).
+  La reducción de la inflación en alimentos fue clave para la desinflación general.
+
+Restaurantes y hoteles:                      8,12%
+  La inflación en servicios de comida fuera del hogar fue la más alta entre todos
+  los grupos, reflejando la indexación rezagada del sector de servicios.
+
+Vivienda (alquileres, servicios públicos):   5,84%
+  Los arrendamientos aumentaron en línea con el ajuste anual del IPC del año anterior.
+
+Transporte:                                  4,91%
+  Incluye gasolina, transporte público y mantenimiento de vehículos.
+
+Educación:                                   7,23%
+  Las matrículas educativas registraron aumentos superiores al IPC general.
+
+Salud:                                       7,08%
+  Los servicios de salud y medicamentos registraron inflaciones por encima del promedio.
+
+Comunicaciones:                              2,14%
+  Los planes de telefonía e internet registraron la inflación más baja entre los grupos.
+
+Recreación y cultura:                        4,67%
+
+Prendas de vestir y calzado:                 3,89%
+
+Muebles, artículos del hogar:                3,44%
+
+Bebidas alcohólicas y tabaco:                9,71%
+
+============================================================
+5. IPC POR CIUDADES PRINCIPALES
+============================================================
+
+El DANE calcula el IPC para las principales ciudades del país.
+Variación anual diciembre 2024 por ciudad:
+
+Bogotá D.C.:        4,89%   (por debajo del promedio nacional)
+Medellín:           5,21%
+Cali:               5,63%
+Barranquilla:       5,48%
+Bucaramanga:        5,32%
+Manizales:          4,97%
+Pereira:            5,58%
+Ibagué:             5,74%
+Cúcuta:             6,12%   (por encima del promedio, por presión fronteriza)
+Villavicencio:      5,89%
+
+============================================================
+6. POLÍTICA MONETARIA Y PERSPECTIVAS
+============================================================
+
+El Banco de la República de Colombia bajó la tasa de intervención de manera
+progresiva durante 2024, desde 13,25% (máximo histórico) hasta 9,50% a diciembre
+de 2024. Para 2025, el banco central proyecta continuar el ciclo de recortes hasta
+alcanzar tasas entre 7% y 8%, dependiendo del comportamiento de la inflación y el
+tipo de cambio.
+
+La meta de inflación de largo plazo del Banco de la República es 3% anual.
+Se proyecta que Colombia alcance este nivel en 2026.
+
+============================================================
+7. METODOLOGÍA Y FUENTE
+============================================================
+
+El IPC se calcula mensualmente con información de 13 ciudades y 443 artículos de
+la canasta familiar. La canasta fue actualizada en 2019 con base en la Encuesta
+Nacional de Presupuestos de los Hogares (ENPH 2016-2017).
+
+Para más información: www.dane.gov.co/estadisticas-por-tema/precios-y-costos
+
+DANE — Departamento Administrativo Nacional de Estadística
+Bogotá D.C., Colombia — 2024
