@@ -2,6 +2,7 @@
 .env
 *.env
 .env.*
+!.env.example
 
 # Base de datos local (se genera al ejecutar el proyecto)
 *.db

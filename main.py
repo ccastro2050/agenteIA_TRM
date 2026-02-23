@@ -37,8 +37,10 @@ from datetime import datetime
 from typing import Optional
 import csv
 import io
+import json
+import shutil
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
@@ -335,6 +337,72 @@ async def save_config_ui(body: dict) -> dict:
          summary="Modelos disponibles por proveedor")
 async def get_modelos() -> dict:
     return config.MODELOS_POR_PROVEEDOR
+
+
+# ---------------------------------------------------------------------------
+# Rutas de datos y documentos
+# ---------------------------------------------------------------------------
+
+_DATOS_DIR = config.BASE_DIR / "datos"
+_DOCS_DIR  = config.BASE_DIR / "documentos"
+
+
+@app.get("/api/archivos", tags=["Archivos"], summary="Listar archivos de datos y documentos")
+async def listar_archivos() -> dict:
+    """Retorna la lista de archivos en datos/ y documentos/."""
+    def _info(path) -> list:
+        if not path.exists():
+            return []
+        return [
+            {
+                "nombre":    f.name,
+                "tamaño_kb": round(f.stat().st_size / 1024, 1),
+                "modificado": datetime.fromtimestamp(f.stat().st_mtime).strftime("%Y-%m-%d %H:%M"),
+            }
+            for f in sorted(path.iterdir())
+            if f.is_file() and not f.name.startswith(".")
+        ]
+    return {"datos": _info(_DATOS_DIR), "documentos": _info(_DOCS_DIR)}
+
+
+@app.post("/api/upload/{carpeta}", tags=["Archivos"], summary="Subir un archivo")
+async def upload_archivo(carpeta: str, archivo: UploadFile = File(...)) -> dict:
+    """Copia el archivo a datos/ o documentos/ según el parámetro carpeta."""
+    if carpeta not in ("datos", "documentos"):
+        raise HTTPException(status_code=400, detail="carpeta debe ser 'datos' o 'documentos'")
+    destino = (_DATOS_DIR if carpeta == "datos" else _DOCS_DIR) / archivo.filename
+    with open(destino, "wb") as f:
+        shutil.copyfileobj(archivo.file, f)
+    return {"ok": True, "nombre": archivo.filename}
+
+
+@app.delete("/api/archivos/{carpeta}/{nombre}", tags=["Archivos"], summary="Eliminar un archivo")
+async def eliminar_archivo(carpeta: str, nombre: str) -> dict:
+    """Elimina un archivo de datos/ o documentos/."""
+    if carpeta not in ("datos", "documentos"):
+        raise HTTPException(status_code=400, detail="carpeta inválida")
+    ruta = (_DATOS_DIR if carpeta == "datos" else _DOCS_DIR) / nombre
+    if not ruta.exists() or not ruta.is_file():
+        raise HTTPException(status_code=404, detail=f"Archivo no encontrado: {nombre}")
+    ruta.unlink()
+    return {"ok": True, "nombre": nombre}
+
+
+# ---------------------------------------------------------------------------
+# Workflow n8n
+# ---------------------------------------------------------------------------
+
+@app.get("/api/n8n-workflow", tags=["n8n"], summary="Workflow JSON para importar en n8n")
+async def get_n8n_workflow() -> dict:
+    """Retorna el JSON del workflow n8n generado por langgraph_to_n8n.py."""
+    json_path = config.BASE_DIR / "langgraph_to_n8n.json"
+    if not json_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="Archivo no encontrado. Ejecuta primero: python langgraph_to_n8n.py",
+        )
+    with open(json_path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 
 @app.get("/", include_in_schema=False)

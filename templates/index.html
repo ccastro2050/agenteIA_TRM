@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agente IA Colombia — TRM</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    body { background: #f0f2f5; }
+    .sidebar {
+      min-height: calc(100vh - 56px);
+      background: #fff;
+      border-right: 1px solid #dee2e6;
+      overflow-y: auto;
+    }
+    .main-content { min-height: calc(100vh - 56px); }
+    .prompt-textarea {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.80rem;
+      resize: vertical;
+      min-height: 140px;
+    }
+    .response-card {
+      background: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1.25rem;
+      min-height: 80px;
+    }
+    .response-card p { margin-bottom: 0.5rem; }
+    .response-card table { font-size: 0.9rem; }
+    .status-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 4px;
+    }
+    .status-dot.ok    { background: #28a745; }
+    .status-dot.error { background: #dc3545; }
+    .status-dot.warn  { background: #ffc107; }
+    .nav-tabs .nav-link { color: #495057; }
+    .nav-tabs .nav-link.active { font-weight: 600; }
+    .accordion-button:not(.collapsed) { background: #e8f4fd; color: #0d6efd; }
+    .cost-table td, .cost-table th { padding: 0.2rem 0.4rem; font-size: 0.8rem; }
+    .kpi-card { border-radius: 10px; }
+    .kpi-card .kpi-value { font-size: 1.6rem; font-weight: 700; }
+    .kpi-card .kpi-label { font-size: 0.75rem; color: #6c757d; }
+    pre code { font-size: 0.82rem; }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar ─────────────────────────────────────────────────────────────── -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+  <div class="container-fluid px-3">
+    <span class="navbar-brand fw-bold">
+      <i class="bi bi-cpu-fill text-info"></i> Agente IA Colombia
+    </span>
+    <div class="d-flex align-items-center gap-3 ms-auto">
+      <span class="small">
+        <span class="status-dot" id="statusDot" title="Estado API"></span>
+        <span id="statusText" class="text-white-50">Conectando...</span>
+      </span>
+      <span class="badge bg-secondary" id="versionBadge">v—</span>
+      <span class="badge bg-info text-dark" id="modelBadge" title="Modelo activo">—</span>
+      <button class="btn btn-sm btn-outline-light" onclick="toggleTheme()" title="Cambiar tema">
+        <i class="bi bi-moon-fill" id="themeIcon"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Layout ─────────────────────────────────────────────────────────────── -->
+<div class="container-fluid p-0">
+  <div class="row g-0">
+
+    <!-- ── Sidebar ────────────────────────────────────────────────────────── -->
+    <div class="col-xl-2 col-lg-3 col-md-4 sidebar py-3 px-3">
+
+      <p class="text-uppercase text-muted fw-bold small mb-2">Configuración LLM</p>
+
+      <!-- Proveedor -->
+      <div class="mb-2">
+        <label class="form-label small fw-semibold mb-1">Proveedor</label>
+        <select class="form-select form-select-sm" id="selProvider" onchange="onProviderChange()">
+          <option value="anthropic">Anthropic</option>
+          <option value="openai">OpenAI</option>
+          <option value="deepseek">DeepSeek</option>
+          <option value="ollama">Ollama (local)</option>
+          <option value="qwen">Qwen</option>
+          <option value="zhipu">Zhipu</option>
+          <option value="moonshot">Moonshot</option>
+        </select>
+      </div>
+
+      <!-- Modelo -->
+      <div class="mb-2">
+        <label class="form-label small fw-semibold mb-1">Modelo</label>
+        <select class="form-select form-select-sm" id="selModelo" onchange="checkModelCompat()"></select>
+        <div id="warnNoTools" class="d-none mt-1 p-1 rounded small text-warning"
+             style="background:rgba(255,193,7,0.12);border:1px solid rgba(255,193,7,0.4)">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          Este modelo <strong>no soporta tool calling</strong> — el agente no podrá usar herramientas.
+          Usa <code>deepseek-chat</code>, <code>gpt-4o</code> o <code>claude-sonnet-4-6</code>.
+        </div>
+      </div>
+
+      <!-- API Key -->
+      <div class="mb-2">
+        <label class="form-label small fw-semibold mb-1">API Key</label>
+        <div class="input-group input-group-sm">
+          <input type="password" class="form-control" id="inputApiKey" placeholder="sk-…">
+          <button class="btn btn-outline-secondary" type="button" onclick="toggleKey()" title="Ver/ocultar">
+            <i class="bi bi-eye" id="eyeIcon"></i>
+          </button>
+        </div>
+      </div>
+
+      <hr class="my-2">
+      <p class="text-uppercase text-muted fw-bold small mb-2">Vector Store</p>
+
+      <!-- pgvector es el único backend soportado -->
+      <div class="mb-3">
+        <div class="input-group input-group-sm">
+          <span class="input-group-text"><i class="bi bi-database-fill text-primary"></i></span>
+          <input type="text" class="form-control" value="pgvector (PostgreSQL)" readonly>
+        </div>
+        <div class="form-text text-muted" style="font-size:0.75rem">
+          <i class="bi bi-info-circle"></i> Este proyecto usa exclusivamente pgvector.
+        </div>
+      </div>
+
+      <hr class="my-2">
+      <p class="text-uppercase text-muted fw-bold small mb-2">
+        <i class="bi bi-graph-up text-info"></i> LangSmith
+      </p>
+
+      <!-- LangSmith API Key -->
+      <div class="mb-2">
+        <label class="form-label small fw-semibold mb-1">API Key</label>
+        <div class="input-group input-group-sm">
+          <input type="password" class="form-control" id="inputLsKey" placeholder="lsv2_pt_…">
+          <button class="btn btn-outline-secondary" type="button" onclick="toggleLsKey()" title="Ver/ocultar">
+            <i class="bi bi-eye" id="eyeLsIcon"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- LangSmith Project -->
+      <div class="mb-3">
+        <label class="form-label small fw-semibold mb-1">Proyecto</label>
+        <input type="text" class="form-control form-control-sm" id="inputLsProject"
+               placeholder="agenteIA-TRM">
+      </div>
+
+      <button class="btn btn-primary btn-sm w-100 mb-3" onclick="saveConfig()">
+        <i class="bi bi-save2"></i> Guardar configuración
+      </button>
+
+      <hr class="my-2">
+
+      <!-- Estado -->
+      <div class="small mb-3">
+        <div class="mb-1">
+          <span class="status-dot ok"></span>
+          <span id="infoModelo" class="text-muted">—</span>
+        </div>
+        <div class="mb-1">
+          <i class="bi bi-database text-secondary"></i>
+          <span id="infoVectorStore" class="text-muted">PGVECTOR</span>
+        </div>
+        <div id="infoLangSmith" class="d-none mb-1">
+          <i class="bi bi-graph-up text-info"></i>
+          <span class="text-muted">LangSmith activo</span>
+        </div>
+      </div>
+
+      <!-- Costos -->
+      <p class="text-uppercase text-muted fw-bold small mb-1">Costos USD/1K tokens</p>
+      <table class="table table-borderless mb-2 cost-table">
+        <tr><td class="text-muted">Input</td> <td class="text-end fw-semibold" id="costIn">—</td></tr>
+        <tr><td class="text-muted">Output</td><td class="text-end fw-semibold" id="costOut">—</td></tr>
+      </table>
+
+      <div class="d-grid gap-1">
+        <a href="/docs" target="_blank" class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-file-code"></i> OpenAPI /docs
+        </a>
+        <a href="https://smith.langchain.com" target="_blank"
+           class="btn btn-outline-info btn-sm" id="langsmithBtn" style="display:none">
+          <i class="bi bi-graph-up"></i> LangSmith
+        </a>
+      </div>
+    </div>
+
+    <!-- ── Main ───────────────────────────────────────────────────────────── -->
+    <div class="col main-content py-3 px-4">
+
+      <!-- Tabs -->
+      <ul class="nav nav-tabs mb-3" id="mainTabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" href="#" onclick="return showTab('chat')">
+            <i class="bi bi-chat-dots"></i> Chat
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="return showTab('prompts')">
+            <i class="bi bi-pencil-square"></i> Prompts
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="return showTab('metricas')">
+            <i class="bi bi-speedometer2"></i> Métricas
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="return showTab('historial')">
+            <i class="bi bi-clock-history"></i> Historial
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="return showTab('archivos')">
+            <i class="bi bi-folder2-open text-success"></i> Archivos
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="return showTab('n8n')">
+            <i class="bi bi-diagram-2-fill text-warning"></i> n8n
+          </a>
+        </li>
+      </ul>
+
+      <!-- ── Tab: Chat ────────────────────────────────────────────────────── -->
+      <div id="tabChat">
+        <!-- Sugerencias -->
+        <div class="mb-3 d-flex flex-wrap gap-2">
+          <button class="btn btn-outline-secondary btn-sm" onclick="setSuggestion('¿Cuánto está el dólar hoy en Colombia?')">
+            <i class="bi bi-currency-dollar"></i> TRM actual
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" onclick="setSuggestion('¿Cuál fue la balanza comercial de Colombia en 2024?')">
+            <i class="bi bi-bar-chart"></i> Balanza comercial
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" onclick="setSuggestion('¿Cuál fue la inflación en Colombia en 2024?')">
+            <i class="bi bi-graph-up-arrow"></i> Inflación 2024
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" onclick="setSuggestion('¿Cuál es el TRM actual y cómo se relaciona con la inflación y el desempleo del DANE en 2024?')">
+            <i class="bi bi-diagram-3"></i> Cruzada TRM + DANE
+          </button>
+        </div>
+
+        <!-- Pregunta -->
+        <div class="mb-3">
+          <textarea id="inputPregunta" class="form-control" rows="3"
+            placeholder="Ej: ¿Cuál es el TRM actual y cómo afecta las exportaciones colombianas?"
+            onkeydown="if(event.ctrlKey && event.key==='Enter') enviarConsulta()"></textarea>
+          <div class="form-text">Ctrl+Enter para enviar</div>
+        </div>
+
+        <!-- Controles -->
+        <div class="row g-2 mb-3 align-items-center">
+          <div class="col-auto">
+            <span class="small fw-semibold me-2">Backend:</span>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="backend" id="rbLanggraph" value="langgraph" checked>
+              <label class="form-check-label small" for="rbLanggraph">
+                <span class="badge bg-success">LangGraph</span>
+                <span class="text-muted" style="font-size:0.75rem">Supervisor+Especialistas</span>
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="backend" id="rbLangchain" value="langchain">
+              <label class="form-check-label small" for="rbLangchain">
+                <span class="badge bg-primary">LangChain</span>
+                <span class="text-muted" style="font-size:0.75rem">ReAct libre</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-auto d-flex align-items-center gap-2">
+            <label class="small fw-semibold text-nowrap">Temp:</label>
+            <input type="range" class="form-range" id="sliderTemp"
+              min="0" max="1" step="0.1" value="0.2"
+              oninput="document.getElementById('lblTemp').textContent=this.value"
+              style="width:100px">
+            <span class="badge bg-secondary" id="lblTemp">0.2</span>
+          </div>
+          <div class="col">
+            <button class="btn btn-primary px-4" id="btnConsultar" onclick="enviarConsulta()">
+              <span id="spinConsulta" class="spinner-border spinner-border-sm d-none me-1"></span>
+              <i class="bi bi-send" id="icoConsultar"></i> Consultar al Agente
+            </button>
+          </div>
+        </div>
+
+        <!-- Respuesta -->
+        <div id="areaRespuesta" class="d-none">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="mb-0"><i class="bi bi-chat-left-text text-primary"></i> Respuesta del agente</h6>
+            <div class="d-flex gap-2" id="metricasRequest"></div>
+          </div>
+          <div class="response-card" id="boxRespuesta"></div>
+        </div>
+      </div>
+
+      <!-- ── Tab: Prompts ──────────────────────────────────────────────────── -->
+      <div id="tabPrompts" class="d-none">
+        <div class="alert alert-info d-flex gap-2 align-items-start mb-3 py-2">
+          <i class="bi bi-info-circle-fill mt-1"></i>
+          <span class="small">
+            Los prompts se envían como parámetros en cada consulta.
+            Al hacer clic en <strong>Guardar</strong> se persisten en SQLite y se cargan automáticamente
+            en la próxima sesión. Puedes modificarlos sin reiniciar la API.
+          </span>
+        </div>
+        <div class="accordion" id="accordionPrompts"></div>
+      </div>
+
+      <!-- ── Tab: Métricas ─────────────────────────────────────────────────── -->
+      <div id="tabMetricas" class="d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">Métricas Operativas</h5>
+          <button class="btn btn-outline-primary btn-sm" onclick="loadMetricas()">
+            <i class="bi bi-arrow-clockwise"></i> Actualizar
+          </button>
+        </div>
+        <p class="text-muted small">Calculadas sobre todas las consultas en SQLite y <code>logs/consultas.jsonl</code></p>
+        <div id="metricasContent"></div>
+      </div>
+
+      <!-- ── Tab: Historial ────────────────────────────────────────────────── -->
+      <div id="tabHistorial" class="d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="d-flex align-items-center gap-3">
+            <h5 class="mb-0">Historial de consultas</h5>
+            <select class="form-select form-select-sm" id="selN" style="width:auto"
+                    onchange="loadHistorial()">
+              <option value="20">Últimas 20</option>
+              <option value="50" selected>Últimas 50</option>
+              <option value="100">Últimas 100</option>
+              <option value="200">Últimas 200</option>
+              <option value="500">Últimas 500</option>
+              <option value="9999">Todas</option>
+            </select>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-success btn-sm" onclick="exportarHistorialCSV()"
+                    title="Descargar historial completo como CSV">
+              <i class="bi bi-download"></i> Exportar CSV
+            </button>
+            <button class="btn btn-outline-primary btn-sm" onclick="loadHistorial()">
+              <i class="bi bi-arrow-clockwise"></i> Actualizar
+            </button>
+          </div>
+        </div>
+        <div id="historialContent">
+          <p class="text-muted">Cargando historial...</p>
+        </div>
+      </div>
+
+      <!-- ── Tab: Archivos ─────────────────────────────────────────────────── -->
+      <div id="tabArchivos" class="d-none">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">
+            <i class="bi bi-folder2-open text-success"></i> Gestión de archivos
+          </h5>
+          <button class="btn btn-outline-success btn-sm" onclick="loadArchivos()">
+            <i class="bi bi-arrow-clockwise"></i> Actualizar lista
+          </button>
+        </div>
+
+        <div class="alert alert-success d-flex gap-2 align-items-start py-2 mb-3">
+          <i class="bi bi-info-circle-fill mt-1"></i>
+          <span class="small">
+            Los archivos subidos se copian a la carpeta del proyecto y quedan disponibles de inmediato para los agentes.
+            <strong>Después de subir documentos (.txt/.pdf)</strong> ejecuta
+            <code>python preparar_base.py</code> para re-indexar pgvector.
+          </span>
+        </div>
+
+        <div class="row g-4">
+
+          <!-- ── Carpeta: datos/ ─────────────────────────────────────────── -->
+          <div class="col-lg-6">
+            <div class="card h-100">
+              <div class="card-header d-flex justify-content-between align-items-center py-2">
+                <span class="fw-semibold">
+                  <i class="bi bi-table text-primary"></i> datos/
+                  <span class="badge bg-primary ms-1" id="badgeDatos">0</span>
+                </span>
+                <span class="text-muted small">CSV — TRM, Comercio exterior</span>
+              </div>
+              <div class="card-body p-2">
+
+                <!-- Lista de archivos -->
+                <div id="listaDatos" class="mb-3" style="min-height:60px"></div>
+
+                <!-- Zona de carga -->
+                <div class="drop-zone border-2 border-dashed rounded p-3 text-center"
+                     id="dropDatos"
+                     ondragover="onDragOver(event)"
+                     ondragleave="onDragLeave(event)"
+                     ondrop="onDrop(event,'datos')"
+                     onclick="document.getElementById('fileDatos').click()"
+                     style="cursor:pointer;border-style:dashed!important;
+                            border-color:#0d6efd44;background:#f8f9ff">
+                  <i class="bi bi-cloud-upload-fill fs-3 text-primary opacity-50"></i>
+                  <p class="mb-1 small fw-semibold text-primary">Arrastra un CSV aquí</p>
+                  <p class="mb-0 text-muted" style="font-size:0.78rem">o haz clic para seleccionar</p>
+                  <span class="badge bg-primary mt-1">.csv</span>
+                </div>
+                <input type="file" id="fileDatos" class="d-none" accept=".csv" multiple
+                       onchange="uploadFiles('datos', this.files)">
+
+                <!-- Barra de progreso -->
+                <div class="progress mt-2 d-none" id="progDatos" style="height:6px">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                       style="width:100%"></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Carpeta: documentos/ ────────────────────────────────────── -->
+          <div class="col-lg-6">
+            <div class="card h-100">
+              <div class="card-header d-flex justify-content-between align-items-center py-2">
+                <span class="fw-semibold">
+                  <i class="bi bi-file-text text-success"></i> documentos/
+                  <span class="badge bg-success ms-1" id="badgeDocs">0</span>
+                </span>
+                <span class="text-muted small">TXT / PDF — Reportes DANE</span>
+              </div>
+              <div class="card-body p-2">
+
+                <!-- Lista de archivos -->
+                <div id="listaDocs" class="mb-3" style="min-height:60px"></div>
+
+                <!-- Zona de carga -->
+                <div class="drop-zone border-2 border-dashed rounded p-3 text-center"
+                     id="dropDocs"
+                     ondragover="onDragOver(event)"
+                     ondragleave="onDragLeave(event)"
+                     ondrop="onDrop(event,'documentos')"
+                     onclick="document.getElementById('fileDocs').click()"
+                     style="cursor:pointer;border-style:dashed!important;
+                            border-color:#19875444;background:#f8fff9">
+                  <i class="bi bi-cloud-upload-fill fs-3 text-success opacity-50"></i>
+                  <p class="mb-1 small fw-semibold text-success">Arrastra documentos aquí</p>
+                  <p class="mb-0 text-muted" style="font-size:0.78rem">o haz clic para seleccionar</p>
+                  <span class="badge bg-success mt-1">.txt</span>
+                  <span class="badge bg-secondary mt-1">.pdf</span>
+                  <span class="badge bg-secondary mt-1">.md</span>
+                </div>
+                <input type="file" id="fileDocs" class="d-none" accept=".txt,.pdf,.md" multiple
+                       onchange="uploadFiles('documentos', this.files)">
+
+                <!-- Barra de progreso -->
+                <div class="progress mt-2 d-none" id="progDocs" style="height:6px">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                       style="width:100%"></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /row -->
+
+        <!-- Aviso re-indexar -->
+        <div id="avisoReindexar" class="alert alert-warning d-flex gap-2 align-items-start mt-3 py-2 d-none">
+          <i class="bi bi-exclamation-triangle-fill mt-1"></i>
+          <span class="small">
+            Se subieron documentos nuevos. Para que el agente RAG los encuentre debes
+            re-indexar pgvector:<br>
+            <code>python preparar_base.py</code>
+          </span>
+        </div>
+
+      </div>
+
+      <!-- ── Tab: n8n ──────────────────────────────────────────────────────── -->
+      <div id="tabN8n" class="d-none">
+        <div class="row g-4">
+
+          <!-- Columna izquierda: JSON + botones -->
+          <div class="col-lg-7">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="mb-0">
+                <i class="bi bi-diagram-2-fill text-warning"></i>
+                Workflow n8n
+              </h5>
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-warning btn-sm" onclick="loadN8nJson()">
+                  <span id="spinN8n" class="spinner-border spinner-border-sm d-none me-1"></span>
+                  <i class="bi bi-arrow-clockwise"></i> Cargar JSON
+                </button>
+                <button class="btn btn-warning btn-sm" id="btnCopyN8n" onclick="copyN8nJson()" disabled>
+                  <i class="bi bi-clipboard2-fill"></i> Copiar
+                </button>
+              </div>
+            </div>
+
+            <div class="position-relative">
+              <pre id="n8nJsonBox"
+                   style="background:#1e1e2e;color:#cdd6f4;border-radius:8px;
+                          padding:1rem;max-height:520px;overflow:auto;
+                          font-size:0.78rem;font-family:'Consolas','Courier New',monospace;
+                          white-space:pre;border:1px solid #313244;"
+              ><span class="text-muted fst-italic">Haz clic en "Cargar JSON" para ver el workflow.</span></pre>
+            </div>
+          </div>
+
+          <!-- Columna derecha: instrucciones -->
+          <div class="col-lg-5">
+            <div class="card border-warning h-100">
+              <div class="card-header bg-warning bg-opacity-10 border-warning py-2">
+                <h6 class="mb-0">
+                  <i class="bi bi-info-circle-fill text-warning"></i>
+                  Cómo importar en n8n
+                </h6>
+              </div>
+              <div class="card-body small">
+
+                <ol class="ps-3 mb-3">
+                  <li class="mb-2">
+                    <strong>Abre n8n</strong> (local o cloud) y accede a tu workspace.
+                  </li>
+                  <li class="mb-2">
+                    Haz clic en <strong>Cargar JSON</strong> (arriba a la izquierda) y luego
+                    en <strong>Copiar</strong>.
+                  </li>
+                  <li class="mb-2">
+                    En n8n, ve al menú <kbd>⋮</kbd> → <strong>Import from JSON</strong>
+                    (o usa el atajo <kbd>Ctrl+Shift+V</kbd>).
+                  </li>
+                  <li class="mb-2">
+                    Pega el JSON copiado y confirma con <strong>Import</strong>.
+                  </li>
+                  <li class="mb-2">
+                    Verifica que la URL del nodo HTTP apunte a
+                    <code>http://localhost:8001/consulta</code>
+                    (ajusta si la API corre en otro host/puerto).
+                  </li>
+                  <li class="mb-0">
+                    Haz clic en <strong>Execute Workflow</strong> para probar.
+                  </li>
+                </ol>
+
+                <hr class="my-2">
+
+                <p class="text-muted mb-2 fw-semibold">
+                  <i class="bi bi-lightbulb-fill text-warning"></i> Qué hace el workflow
+                </p>
+                <ul class="ps-3 mb-2">
+                  <li>Recibe una pregunta via <strong>Webhook</strong> o <strong>Manual Trigger</strong>.</li>
+                  <li>Hace <code>POST /consulta</code> a esta API con backend <code>langgraph</code>.</li>
+                  <li>Extrae la respuesta y las métricas (latencia, tokens, costo).</li>
+                  <li>Puede conectarse a Slack, email, Google Sheets u otro nodo de n8n.</li>
+                </ul>
+
+                <hr class="my-2">
+
+                <p class="text-muted mb-1 fw-semibold">
+                  <i class="bi bi-terminal-fill text-secondary"></i> Regenerar el JSON
+                </p>
+                <p class="text-muted mb-0" style="font-size:0.8rem">
+                  Si modificas el pipeline puedes regenerar el archivo con:
+                </p>
+                <pre class="bg-dark text-light rounded p-2 mt-1 mb-0"
+                     style="font-size:0.78rem">python langgraph_to_n8n.py</pre>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /col main -->
+  </div><!-- /row -->
+</div><!-- /container -->
+
+<!-- Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+  <div id="toast" class="toast align-items-center border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body d-flex gap-2 align-items-center">
+        <i class="bi" id="toastIcon"></i>
+        <span id="toastMsg"></span>
+      </div>
+      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+<script>
+// ─── Constantes ────────────────────────────────────────────────────────────
+const PROMPT_META = {
+  langchain_main:         { label: 'LangChain — Prompt principal',  icon: 'bi-lightning-charge-fill', color: 'primary'   },
+  langgraph_supervisor:   { label: 'LangGraph — Supervisor',         icon: 'bi-diagram-3-fill',         color: 'success'   },
+  langgraph_trm:          { label: 'LangGraph — Agente TRM',        icon: 'bi-currency-dollar',        color: 'warning'   },
+  langgraph_datos:        { label: 'LangGraph — Agente Datos',      icon: 'bi-bar-chart-fill',         color: 'info'      },
+  langgraph_rag:          { label: 'LangGraph — Agente RAG',        icon: 'bi-search',                 color: 'secondary' },
+  langgraph_sintetizador: { label: 'LangGraph — Sintetizador',      icon: 'bi-funnel-fill',            color: 'danger'    },
+};
+const PROMPT_ORDER = ['langchain_main','langgraph_supervisor','langgraph_trm','langgraph_datos','langgraph_rag','langgraph_sintetizador'];
+
+const COSTOS = {
+  anthropic: { input: 0.003,    output: 0.015    },
+  openai:    { input: 0.00015,  output: 0.0006   },
+  deepseek:  { input: 0.00014,  output: 0.00028  },
+  ollama:    { input: 0.0,      output: 0.0      },
+  qwen:      { input: 0.0005,   output: 0.0015   },
+  zhipu:     { input: 0.0007,   output: 0.0007   },
+  moonshot:  { input: 0.001,    output: 0.003    },
+};
+
+let modelos    = {};
+let curPrompts = {};
+
+// ─── Init ──────────────────────────────────────────────────────────────────
+window.addEventListener('load', async () => {
+  await Promise.all([loadModelos(), checkHealth()]);
+  await loadConfig();
+  await loadPrompts();
+  buildAccordion();
+});
+
+// ─── Health ────────────────────────────────────────────────────────────────
+async function checkHealth() {
+  try {
+    const d = await fetch('/health').then(r => r.json());
+    setDot('ok');
+    document.getElementById('statusText').textContent  = 'API OK';
+    document.getElementById('versionBadge').textContent = 'v' + d.version;
+    if (d.langsmith) {
+      document.getElementById('infoLangSmith').classList.remove('d-none');
+      document.getElementById('langsmithBtn').style.display = '';
+    }
+  } catch {
+    setDot('error');
+    document.getElementById('statusText').textContent = 'API no disponible';
+  }
+}
+function setDot(cls) {
+  const d = document.getElementById('statusDot');
+  d.className = 'status-dot ' + cls;
+}
+
+// ─── Modelos ───────────────────────────────────────────────────────────────
+async function loadModelos() {
+  try { modelos = await fetch('/api/modelos').then(r => r.json()); } catch {}
+}
+
+// Modelos que NO soportan tool calling (no sirven para agentes ReAct/LangGraph)
+const NO_TOOL_MODELS = ['deepseek-reasoner', 'o1', 'o1-mini', 'o1-preview', 'o3-mini'];
+
+function onProviderChange() {
+  const prov = document.getElementById('selProvider').value;
+  updateModelosSel(prov);
+  updateCostTable(prov);
+  checkModelCompat();
+}
+
+function checkModelCompat() {
+  const model = document.getElementById('selModelo').value;
+  const warn  = document.getElementById('warnNoTools');
+  const incompatible = NO_TOOL_MODELS.some(m => model.toLowerCase().includes(m));
+  warn.classList.toggle('d-none', !incompatible);
+}
+
+function updateModelosSel(prov) {
+  const sel = document.getElementById('selModelo');
+  sel.innerHTML = '';
+  (modelos[prov] || []).forEach(m => {
+    const o = document.createElement('option');
+    o.value = m; o.textContent = m;
+    sel.appendChild(o);
+  });
+  if (!modelos[prov] || !modelos[prov].length) {
+    sel.innerHTML = '<option value="">-- escribe el modelo --</option>';
+    sel.setAttribute('data-custom', '1');
+  }
+}
+
+function updateCostTable(prov) {
+  const c = COSTOS[prov] || { input: 0, output: 0 };
+  document.getElementById('costIn').textContent  = '$' + c.input.toFixed(5);
+  document.getElementById('costOut').textContent = '$' + c.output.toFixed(5);
+}
+
+// ─── Config ────────────────────────────────────────────────────────────────
+async function loadConfig() {
+  try {
+    const d = await fetch('/api/config').then(r => r.json());
+    const prov = d.llm_provider || 'openai';
+    document.getElementById('selProvider').value = prov;
+    updateModelosSel(prov);
+    if (d.llm_model) document.getElementById('selModelo').value = d.llm_model;
+    // No prellenar API keys por seguridad
+    if (d.langsmith_project)
+      document.getElementById('inputLsProject').value = d.langsmith_project;
+    if (d.langsmith_enabled || d.langsmith_api_key) {
+      document.getElementById('infoLangSmith').classList.remove('d-none');
+      document.getElementById('langsmithBtn').style.display = '';
+    }
+    updateSidebarStatus(prov, d.llm_model || '');
+    updateCostTable(prov);
+    checkModelCompat();
+  } catch {}
+}
+
+function updateSidebarStatus(prov, model) {
+  document.getElementById('infoModelo').textContent = prov + ' / ' + model;
+  document.getElementById('modelBadge').textContent  = model;
+}
+
+async function saveConfig() {
+  const prov    = document.getElementById('selProvider').value;
+  const model   = document.getElementById('selModelo').value;
+  const apiKey  = document.getElementById('inputApiKey').value.trim();
+  const lsKey   = document.getElementById('inputLsKey').value.trim();
+  const lsProj  = document.getElementById('inputLsProject').value.trim();
+
+  const body = { llm_provider: prov, llm_model: model, vector_store: 'pgvector' };
+  if (apiKey)  body.llm_api_key      = apiKey;
+  if (lsKey)   body.langsmith_api_key = lsKey;
+  if (lsProj)  body.langsmith_project = lsProj;
+
+  try {
+    await fetch('/api/config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    updateSidebarStatus(prov, model);
+    updateCostTable(prov);
+    if (lsKey) {
+      document.getElementById('infoLangSmith').classList.remove('d-none');
+      document.getElementById('langsmithBtn').style.display = '';
+    }
+    toast('Configuración guardada', 'Los cambios aplican en la próxima consulta.', true);
+  } catch {
+    toast('Error', 'No se pudo guardar la configuración.', false);
+  }
+}
+
+function toggleKey() {
+  const inp  = document.getElementById('inputApiKey');
+  const icon = document.getElementById('eyeIcon');
+  if (inp.type === 'password') { inp.type = 'text'; icon.className = 'bi bi-eye-slash'; }
+  else { inp.type = 'password'; icon.className = 'bi bi-eye'; }
+}
+
+function toggleLsKey() {
+  const inp  = document.getElementById('inputLsKey');
+  const icon = document.getElementById('eyeLsIcon');
+  if (inp.type === 'password') { inp.type = 'text'; icon.className = 'bi bi-eye-slash'; }
+  else { inp.type = 'password'; icon.className = 'bi bi-eye'; }
+}
+
+// ─── Prompts ───────────────────────────────────────────────────────────────
+async function loadPrompts() {
+  try { curPrompts = await fetch('/api/prompts').then(r => r.json()); } catch {}
+}
+
+function buildAccordion() {
+  const acc = document.getElementById('accordionPrompts');
+  acc.innerHTML = '';
+  PROMPT_ORDER.forEach((nombre, i) => {
+    const m = PROMPT_META[nombre] || { label: nombre, icon: 'bi-code', color: 'secondary' };
+    const item = document.createElement('div');
+    item.className = 'accordion-item mb-1 border rounded';
+    item.innerHTML = `
+      <h2 class="accordion-header">
+        <button class="accordion-button${i > 0 ? ' collapsed' : ''} rounded" type="button"
+          data-bs-toggle="collapse" data-bs-target="#pc_${nombre}">
+          <i class="bi ${m.icon} me-2 text-${m.color}"></i>
+          <strong class="me-2">${m.label}</strong>
+          <span class="badge bg-${m.color} ms-auto opacity-50 small">editable</span>
+        </button>
+      </h2>
+      <div id="pc_${nombre}" class="accordion-collapse collapse${i === 0 ? ' show' : ''}">
+        <div class="accordion-body pt-2">
+          <textarea id="pt_${nombre}" class="form-control prompt-textarea"
+            rows="8">${escHtml(curPrompts[nombre] || '')}</textarea>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <small class="text-muted">
+              <i class="bi bi-database-fill-lock"></i> Guardado en SQLite · persiste entre sesiones
+            </small>
+            <button class="btn btn-sm btn-${m.color}" onclick="savePrompt('${nombre}')">
+              <i class="bi bi-save2"></i> Guardar
+            </button>
+          </div>
+        </div>
+      </div>`;
+    acc.appendChild(item);
+  });
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+async function savePrompt(nombre) {
+  const ta = document.getElementById('pt_' + nombre);
+  try {
+    await fetch('/api/prompts/' + nombre, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contenido: ta.value }),
+    });
+    curPrompts[nombre] = ta.value;
+    toast('Prompt guardado', PROMPT_META[nombre]?.label || nombre, true);
+  } catch {
+    toast('Error', 'No se pudo guardar el prompt.', false);
+  }
+}
+
+function getPromptsFromUI() {
+  const p = {};
+  PROMPT_ORDER.forEach(n => {
+    const ta = document.getElementById('pt_' + n);
+    if (ta) p[n] = ta.value;
+  });
+  return p;
+}
+
+// ─── Chat ──────────────────────────────────────────────────────────────────
+function setSuggestion(txt) { document.getElementById('inputPregunta').value = txt; }
+
+async function enviarConsulta() {
+  const pregunta = document.getElementById('inputPregunta').value.trim();
+  if (!pregunta) { toast('Aviso', 'Escribe una pregunta primero.', false); return; }
+
+  const backend    = document.querySelector('input[name="backend"]:checked').value;
+  const temperatura= parseFloat(document.getElementById('sliderTemp').value);
+  const prompts    = getPromptsFromUI();
+
+  // UI loading
+  document.getElementById('btnConsultar').disabled = true;
+  document.getElementById('spinConsulta').classList.remove('d-none');
+  document.getElementById('icoConsultar').classList.add('d-none');
+  document.getElementById('areaRespuesta').classList.add('d-none');
+
+  try {
+    const r = await fetch('/consulta', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pregunta, temperatura, backend, prompts }),
+    });
+    const d = await r.json();
+
+    // ── Error HTTP (4xx / 5xx) ──────────────────────────────────────────────
+    if (!r.ok) {
+      const detail = d.detail || `Error HTTP ${r.status}`;
+      document.getElementById('areaRespuesta').classList.remove('d-none');
+      document.getElementById('boxRespuesta').innerHTML =
+        `<div class="alert alert-danger mb-0">
+           <strong><i class="bi bi-exclamation-triangle-fill me-1"></i>Error ${r.status}</strong>
+           <pre class="mb-0 mt-2" style="white-space:pre-wrap;font-size:.83rem;background:transparent;border:none;padding:0">${escHtml(detail)}</pre>
+         </div>`;
+      document.getElementById('metricasRequest').innerHTML =
+        `<span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Error ${r.status}</span>
+         <span class="badge bg-secondary">${backend}</span>`;
+      toast('Error del agente', detail.substring(0, 120), false);
+      return;
+    }
+
+    // ── Respuesta OK ────────────────────────────────────────────────────────
+    document.getElementById('areaRespuesta').classList.remove('d-none');
+    document.getElementById('boxRespuesta').innerHTML = marked.parse(d.respuesta || '');
+
+    const lat   = Math.round(d.latencia_ms || 0);
+    const tok   = d.tokens_total || 0;
+    const costo = (d.costo_estimado_usd || 0).toFixed(4);
+    const be    = d.backend || backend;
+    const beColor = be === 'langgraph' ? 'success' : 'primary';
+
+    document.getElementById('metricasRequest').innerHTML = `
+      <span class="badge bg-secondary">${lat} ms</span>
+      <span class="badge bg-success">${tok} tokens</span>
+      <span class="badge bg-warning text-dark">$${costo} USD</span>
+      <span class="badge bg-${beColor}">${be}</span>`;
+  } catch (e) {
+    document.getElementById('areaRespuesta').classList.remove('d-none');
+    document.getElementById('boxRespuesta').innerHTML =
+      `<div class="alert alert-danger mb-0">
+         <strong><i class="bi bi-wifi-off me-1"></i>Error de red</strong>
+         <pre class="mb-0 mt-2" style="white-space:pre-wrap;font-size:.83rem;background:transparent;border:none;padding:0">${escHtml(e.message)}</pre>
+       </div>`;
+    document.getElementById('metricasRequest').innerHTML =
+      `<span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Sin conexión</span>`;
+    toast('Error de red', e.message, false);
+  } finally {
+    document.getElementById('btnConsultar').disabled = false;
+    document.getElementById('spinConsulta').classList.add('d-none');
+    document.getElementById('icoConsultar').classList.remove('d-none');
+  }
+}
+
+// ─── Métricas ──────────────────────────────────────────────────────────────
+async function loadMetricas() {
+  const cont = document.getElementById('metricasContent');
+  cont.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>';
+  try {
+    const m = await fetch('/metricas').then(r => r.json());
+    if (m.sin_datos) {
+      cont.innerHTML = `<div class="alert alert-info">${m.mensaje}</div>`;
+      return;
+    }
+    const p = (n, d=0) => Number(n||0).toFixed(d);
+    cont.innerHTML = `
+      <div class="row g-3 mb-4">
+        ${kpiCard('Consultas', m.total_consultas, 'bi-chat-dots', 'primary')}
+        ${kpiCard('Latencia p50', Math.round(m.latencia_p50_ms)+' ms', 'bi-stopwatch', 'info')}
+        ${kpiCard('Costo total', '$'+p(m.costo_total_usd,4)+' USD', 'bi-cash-coin', 'warning')}
+        ${kpiCard('Tokens total', m.tokens_total, 'bi-type', 'success')}
+      </div>
+      <div class="row g-3 mb-4">
+        <div class="col-12"><h6 class="fw-semibold">Latencia</h6></div>
+        ${mini('Promedio', Math.round(m.latencia_promedio_ms)+' ms')}
+        ${mini('p50', Math.round(m.latencia_p50_ms)+' ms')}
+        ${mini('p95', Math.round(m.latencia_p95_ms)+' ms')}
+        ${mini('p99', Math.round(m.latencia_p99_ms)+' ms')}
+        ${mini('Mín', Math.round(m.latencia_min_ms||0)+' ms')}
+        ${mini('Máx', Math.round(m.latencia_max_ms||0)+' ms')}
+      </div>
+      <div class="row g-3 mb-4">
+        <div class="col-12"><h6 class="fw-semibold">Costos</h6></div>
+        ${mini('Total', '$'+p(m.costo_total_usd,4)+' USD')}
+        ${mini('Promedio/consulta', '$'+p(m.costo_promedio_usd,6)+' USD')}
+        ${mini('Por 1K tokens', '$'+p(m.costo_por_mil_tokens,4)+' USD')}
+      </div>
+      <div class="row g-3 mb-4">
+        <div class="col-12"><h6 class="fw-semibold">Tokens</h6></div>
+        ${mini('Input total', m.tokens_in_total)}
+        ${mini('Output total', m.tokens_out_total)}
+        ${mini('Total', m.tokens_total)}
+      </div>
+      ${m.consultas_por_modelo ? `
+      <h6 class="fw-semibold">Consultas por modelo</h6>
+      <div class="table-responsive">
+        <table class="table table-sm table-striped">
+          <thead class="table-dark"><tr><th>Modelo</th><th class="text-end">Consultas</th></tr></thead>
+          <tbody>${Object.entries(m.consultas_por_modelo).map(([k,v])=>`<tr><td>${k}</td><td class="text-end">${v}</td></tr>`).join('')}</tbody>
+        </table>
+      </div>` : ''}
+      <small class="text-muted">Primera: ${m.primera_consulta||'N/A'} · Última: ${m.ultima_consulta||'N/A'}</small>`;
+  } catch {
+    cont.innerHTML = '<div class="alert alert-danger">Error cargando métricas.</div>';
+  }
+}
+
+function kpiCard(label, value, icon, color) {
+  return `<div class="col-sm-6 col-lg-3">
+    <div class="card kpi-card border-${color} border-start border-4 shadow-sm">
+      <div class="card-body py-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="kpi-value text-${color}">${value}</div>
+            <div class="kpi-label">${label}</div>
+          </div>
+          <i class="bi ${icon} fs-2 text-${color} opacity-25"></i>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function mini(label, value) {
+  return `<div class="col-sm-4 col-lg-2">
+    <div class="card shadow-sm"><div class="card-body py-2 text-center">
+      <div class="fw-semibold">${value}</div>
+      <div class="kpi-label">${label}</div>
+    </div></div>
+  </div>`;
+}
+
+// ─── Historial ─────────────────────────────────────────────────────────────
+async function loadHistorial() {
+  const n    = document.getElementById('selN').value;
+  const cont = document.getElementById('historialContent');
+  cont.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>';
+  try {
+    const data = await fetch('/historial?n='+n).then(r => r.json());
+    if (!data.length) {
+      cont.innerHTML = '<div class="alert alert-info">No hay consultas. Haz una consulta primero.</div>';
+      return;
+    }
+    const rows = data.map(r => {
+      const ts  = (r.timestamp||'').substring(0,19).replace('T',' ');
+      const be  = r.backend || '-';
+      const bec = be === 'langgraph' ? 'success' : 'primary';
+      return `<tr>
+        <td class="text-muted small">${ts}</td>
+        <td class="small">${r.pregunta||''}</td>
+        <td class="text-center"><span class="badge bg-${bec}">${be}</span></td>
+        <td class="text-end small">${Math.round(r.latencia_ms||0)} ms</td>
+        <td class="text-end small">${r.tokens_out||0}</td>
+        <td class="text-end small">$${Number(r.costo_usd||0).toFixed(5)}</td>
+      </tr>`;
+    }).join('');
+    cont.innerHTML = `<div class="table-responsive">
+      <table class="table table-sm table-striped table-hover align-middle">
+        <thead class="table-dark">
+          <tr><th>Timestamp</th><th>Pregunta</th><th>Backend</th>
+              <th class="text-end">Latencia</th><th class="text-end">Tokens out</th>
+              <th class="text-end">Costo</th></tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <small class="text-muted">
+      <i class="bi bi-database-fill"></i> Guardado en SQLite ·
+      backup en <code>logs/consultas.jsonl</code>
+    </small>`;
+  } catch {
+    cont.innerHTML = '<div class="alert alert-danger">Error cargando historial.</div>';
+  }
+}
+
+function exportarHistorialCSV() {
+  const a = document.createElement('a');
+  a.href = '/historial/export';
+  a.download = '';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  toast('Exportando', 'Descargando historial completo como CSV.', true);
+}
+
+// ─── Tabs ──────────────────────────────────────────────────────────────────
+const ALL_TABS = ['chat','prompts','metricas','historial','archivos','n8n'];
+
+function showTab(name) {
+  ALL_TABS.forEach(t => {
+    const id = 'tab' + t.charAt(0).toUpperCase() + t.slice(1);
+    document.getElementById(id).classList.toggle('d-none', t !== name);
+  });
+  document.querySelectorAll('#mainTabs .nav-link').forEach((el, i) => {
+    el.classList.toggle('active', ALL_TABS[i] === name);
+  });
+  if (name === 'metricas')  loadMetricas();
+  if (name === 'historial') loadHistorial();
+  if (name === 'archivos')  loadArchivos();
+  return false;
+}
+
+// ─── Archivos ──────────────────────────────────────────────────────────────
+
+async function loadArchivos() {
+  try {
+    const d = await fetch('/api/archivos').then(r => r.json());
+    renderFileList('datos',      d.datos      || [], 'listaDatos', 'badgeDatos');
+    renderFileList('documentos', d.documentos || [], 'listaDocs',  'badgeDocs');
+  } catch {
+    toast('Error', 'No se pudo cargar la lista de archivos.', false);
+  }
+}
+
+function renderFileList(carpeta, files, listId, badgeId) {
+  document.getElementById(badgeId).textContent = files.length;
+  const box = document.getElementById(listId);
+  if (!files.length) {
+    box.innerHTML = '<p class="text-muted small mb-0">Sin archivos.</p>';
+    return;
+  }
+  box.innerHTML = files.map(f => `
+    <div class="d-flex justify-content-between align-items-center
+                border-bottom py-1" style="font-size:0.82rem">
+      <span>
+        <i class="bi bi-file-earmark-fill text-secondary me-1"></i>
+        <span class="fw-semibold">${escHtml(f.nombre)}</span>
+        <span class="text-muted ms-1">${f.tamaño_kb} KB</span>
+      </span>
+      <span class="d-flex align-items-center gap-2">
+        <span class="text-muted" style="font-size:0.75rem">${f.modificado}</span>
+        <button class="btn btn-sm btn-outline-danger py-0 px-1"
+                style="font-size:0.72rem"
+                onclick="deleteArchivo('${carpeta}','${escHtml(f.nombre)}')"
+                title="Eliminar">
+          <i class="bi bi-trash3"></i>
+        </button>
+      </span>
+    </div>`).join('');
+}
+
+async function uploadFiles(carpeta, files) {
+  if (!files || !files.length) return;
+  const progId = carpeta === 'datos' ? 'progDatos' : 'progDocs';
+  const prog   = document.getElementById(progId);
+  prog.classList.remove('d-none');
+  let ok = 0, fail = 0;
+  for (const file of files) {
+    const fd = new FormData();
+    fd.append('archivo', file);
+    try {
+      const r = await fetch(`/api/upload/${carpeta}`, { method: 'POST', body: fd });
+      const d = await r.json();
+      if (r.ok) { ok++; }
+      else { fail++; toast('Error', d.detail || file.name, false); }
+    } catch { fail++; }
+  }
+  prog.classList.add('d-none');
+  if (ok) {
+    toast('Archivos subidos', `${ok} archivo(s) copiados a ${carpeta}/.`, true);
+    if (carpeta === 'documentos')
+      document.getElementById('avisoReindexar').classList.remove('d-none');
+    loadArchivos();
+  }
+  if (fail) toast('Error', `${fail} archivo(s) no se pudieron subir.`, false);
+  const inp = document.getElementById(carpeta === 'datos' ? 'fileDatos' : 'fileDocs');
+  inp.value = '';
+}
+
+async function deleteArchivo(carpeta, nombre) {
+  if (!confirm(`¿Eliminar "${nombre}" de ${carpeta}/?`)) return;
+  try {
+    const r = await fetch(`/api/archivos/${carpeta}/${encodeURIComponent(nombre)}`,
+                          { method: 'DELETE' });
+    const d = await r.json();
+    if (r.ok) {
+      toast('Eliminado', `${nombre} eliminado de ${carpeta}/.`, true);
+      loadArchivos();
+    } else {
+      toast('Error', d.detail || 'No se pudo eliminar.', false);
+    }
+  } catch { toast('Error', 'Error al eliminar el archivo.', false); }
+}
+
+// Drag & drop helpers
+function onDragOver(e) {
+  e.preventDefault();
+  e.currentTarget.style.borderColor = '#0d6efd';
+  e.currentTarget.style.background  = '#eef3ff';
+}
+function onDragLeave(e) {
+  e.currentTarget.style.borderColor = '';
+  e.currentTarget.style.background  = '';
+}
+function onDrop(e, carpeta) {
+  e.preventDefault();
+  onDragLeave(e);
+  uploadFiles(carpeta, e.dataTransfer.files);
+}
+
+// ─── n8n ───────────────────────────────────────────────────────────────────
+let n8nJsonStr = '';
+
+async function loadN8nJson() {
+  const box  = document.getElementById('n8nJsonBox');
+  const spin = document.getElementById('spinN8n');
+  spin.classList.remove('d-none');
+  try {
+    const data = await fetch('/api/n8n-workflow').then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    });
+    n8nJsonStr = JSON.stringify(data, null, 2);
+    box.textContent = n8nJsonStr;
+    document.getElementById('btnCopyN8n').disabled = false;
+    toast('JSON cargado', 'Listo para copiar e importar en n8n.', true);
+  } catch(e) {
+    box.innerHTML = '<span class="text-danger">Error: ' + e.message +
+      ' — ejecuta primero: python langgraph_to_n8n.py</span>';
+    toast('Error', 'No se pudo cargar el workflow JSON.', false);
+  } finally {
+    spin.classList.add('d-none');
+  }
+}
+
+async function copyN8nJson() {
+  if (!n8nJsonStr) return;
+  try {
+    await navigator.clipboard.writeText(n8nJsonStr);
+    toast('Copiado', 'JSON en el portapapeles — pégalo en n8n con Ctrl+Shift+V.', true);
+  } catch {
+    toast('Aviso', 'Selecciona el texto del recuadro y copia manualmente.', false);
+  }
+}
+
+// ─── Dark mode ─────────────────────────────────────────────────────────────
+function toggleTheme() {
+  const html = document.documentElement;
+  const dark = html.getAttribute('data-bs-theme') === 'dark';
+  html.setAttribute('data-bs-theme', dark ? 'light' : 'dark');
+  document.getElementById('themeIcon').className = dark ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+}
+
+// ─── Toast ─────────────────────────────────────────────────────────────────
+function toast(title, msg, ok) {
+  const el = document.getElementById('toast');
+  document.getElementById('toastIcon').className = ok
+    ? 'bi bi-check-circle-fill text-success'
+    : 'bi bi-exclamation-circle-fill text-danger';
+  document.getElementById('toastMsg').textContent = title + ' — ' + msg;
+  el.className = 'toast align-items-center border-0 text-bg-' + (ok ? 'light' : 'danger');
+  new bootstrap.Toast(el, { delay: 3500 }).show();
+}
+</script>
+</body>
+</html>
