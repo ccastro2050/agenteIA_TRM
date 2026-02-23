@@ -1,0 +1,33 @@
+# Claves y configuración sensible — NUNCA subir al repositorio
+.env
+*.env
+.env.*
+
+# Base de datos local (se genera al ejecutar el proyecto)
+*.db
+*.sqlite
+*.sqlite3
+
+# Índice vectorial (se genera con preparar_base.py)
+faiss_index/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Logs (se generan en tiempo de ejecución)
+logs/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
