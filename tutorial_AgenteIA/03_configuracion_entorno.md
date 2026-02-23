@@ -136,44 +136,65 @@ python -c "import langchain, langgraph, fastapi; print('OK')"
 
 ---
 
-## 5. Crear el archivo `.env`
+## 5. Configurar las claves API
 
-Como se explicó en el Documento 01, las claves API van en un archivo
-`.env` que **no se sube a GitHub**.
+### 5.1 El archivo `.env` del repositorio
 
-Crear el archivo en la raíz del proyecto:
+Al clonar el repositorio ya existe un archivo `.env` con **claves de ejemplo
+(falsas)** — los valores `sk-XXXXXXX`. Estas claves permiten que el proyecto
+arranque sin errores de sintaxis, pero **no funcionan para llamar a ninguna API**.
 
-```bash
-# Windows (PowerShell o CMD)
-type nul > .env
+```
+# Así se ve el .env recién clonado (claves falsas)
+DEEPSEEK_API_KEY=sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+OPENAI_API_KEY=sk-proj-XXXXXXXX...
 ```
 
-Abrir `.env` con cualquier editor de texto y pegar el siguiente
-contenido, reemplazando los valores entre `< >`:
+> **Por qué el `.env` está en el repositorio con claves falsas:**
+> Sirve de plantilla lista para completar. Quien clone el repo
+> solo necesita reemplazar los `XXXXXXX` con sus claves reales,
+> sin tener que crear el archivo desde cero ni adivinar su estructura.
+
+---
+
+### ⚠️ ADVERTENCIA DE SEGURIDAD — Leer antes de continuar
+
+**NUNCA hagas `git add .env` ni `git commit` cuando el archivo
+contenga claves API reales.** Si una clave real llega a GitHub
+(aunque sea por un segundo), considera que está comprometida:
+bórrala en el panel del proveedor y genera una nueva de inmediato.
+
+**Regla de oro:** el `.env` del repositorio siempre debe tener
+solo valores `XXXXXXX`. Las claves reales solo viven en tu máquina local.
+
+---
+
+### 5.2 Opción A — Editar `.env` directamente (desarrollo local)
+
+Esta es la forma más rápida para trabajar en tu máquina personal.
+Abre el `.env` con cualquier editor y reemplaza los `XXXXXXX` con
+tus claves reales:
 
 ```
 # ── LLM principal ─────────────────────────────────────────────
-LLM_PROVIDER=openai
-LLM_MODEL=gpt-4o-mini
+LLM_PROVIDER=deepseek
+LLM_MODEL=deepseek-chat
 
-# ── Claves API ────────────────────────────────────────────────
-OPENAI_API_KEY=<pegar aquí la clave de OpenAI>
-ANTHROPIC_API_KEY=
-DEEPSEEK_API_KEY=
+# ── Claves API — reemplaza XXXXXXX con tus claves reales ──────
+ANTHROPIC_API_KEY=sk-ant-api03-tu-clave-real-aqui
+OPENAI_API_KEY=sk-proj-tu-clave-real-aqui
+DEEPSEEK_API_KEY=sk-tu-clave-real-aqui
 
-# ── Embeddings — NO cambiar estos valores ─────────────────────
+# ── Embeddings ────────────────────────────────────────────────
 EMBEDDING_PROVIDER=openai
 EMBEDDING_MODEL=text-embedding-3-small
-
-# ── Vector Store ──────────────────────────────────────────────
-VECTOR_STORE_PROVIDER=pgvector
 
 # ── API REST ──────────────────────────────────────────────────
 HOST=0.0.0.0
 PORT=8001
 
 # ── LangSmith (opcional) ──────────────────────────────────────
-LANGSMITH_API_KEY=
+LANGSMITH_API_KEY=lsv2_pt_tu-clave-langsmith
 LANGSMITH_PROJECT=agenteIA-TRM
 
 # ── pgvector / PostgreSQL ─────────────────────────────────────
@@ -181,16 +202,74 @@ PG_HOST=localhost
 PG_PORT=5432
 PG_DATABASE=bdvector
 PG_USER=postgres
-PG_PASSWORD=<contraseña de PostgreSQL>
+PG_PASSWORD=tu-password-postgresql
 PG_COLLECTION=dane_reportes
 ```
 
-Verificar que `.env` no es rastreado por git:
+**Después de editar, verificar que git NO detecta el cambio como algo a subir:**
 
 ```bash
-git status
-# .env NO debe aparecer en la lista de archivos
+git diff .env
+# Si ves tus claves reales en la salida → NO hagas git add .env
+# El archivo puede estar modificado localmente — eso está bien.
+# Solo asegúrate de nunca ejecutar git add .env con claves reales.
 ```
+
+---
+
+### 5.3 Opción B — Variables de entorno del sistema operativo (recomendado para producción)
+
+Esta es la forma **más segura**: las claves reales nunca están en ningún archivo,
+solo en la memoria del sistema operativo. `python-dotenv` respeta las variables
+de entorno del sistema — si la variable ya existe en el sistema, **no la
+sobreescribe** con el valor del `.env`. Así el `.env` puede quedarse con los
+`XXXXXXX` sin causar problemas.
+
+**Windows — PowerShell (solo para la sesión actual):**
+```powershell
+$env:OPENAI_API_KEY    = "sk-proj-tu-clave-real"
+$env:DEEPSEEK_API_KEY  = "sk-tu-clave-real"
+$env:ANTHROPIC_API_KEY = "sk-ant-api03-tu-clave-real"
+$env:PG_PASSWORD       = "tu-password-postgresql"
+$env:LANGSMITH_API_KEY = "lsv2_pt_tu-clave-langsmith"
+```
+
+**Windows — Permanente (persiste entre reinicios):**
+```powershell
+# Abrir Panel de control → Sistema → Variables de entorno
+# O desde PowerShell como administrador:
+[System.Environment]::SetEnvironmentVariable("OPENAI_API_KEY", "sk-proj-...", "User")
+[System.Environment]::SetEnvironmentVariable("DEEPSEEK_API_KEY", "sk-...", "User")
+```
+
+**Linux / macOS — Solo sesión actual:**
+```bash
+export OPENAI_API_KEY="sk-proj-tu-clave-real"
+export DEEPSEEK_API_KEY="sk-tu-clave-real"
+export PG_PASSWORD="tu-password-postgresql"
+```
+
+**Linux / macOS — Permanente (agregar al final de `~/.bashrc` o `~/.zshrc`):**
+```bash
+echo 'export OPENAI_API_KEY="sk-proj-tu-clave-real"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+> **Por qué funciona:** `load_dotenv()` en `config.py` solo establece una variable
+> si **todavía no existe** en el entorno. Si el sistema operativo ya tiene
+> `OPENAI_API_KEY` con tu clave real, el `.env` con `XXXXXXX` es ignorado
+> para esa variable. Puedes dejar el `.env` intacto en el repositorio.
+
+---
+
+**Resumen: ¿cuándo usar cada opción?**
+
+| Situación | Opción recomendada |
+|---|---|
+| Desarrollo personal en tu PC | A — editar `.env` (sin hacer commit) |
+| Servidor de producción / VPS | B — variables de entorno del SO |
+| CI/CD (GitHub Actions, etc.) | B — secrets del repositorio |
+| Compartir el proyecto con otros | El `.env` del repo con `XXXXXXX` sirve de plantilla |
 
 ---
 
@@ -201,7 +280,7 @@ Después de clonar y configurar, la estructura del proyecto es:
 ```
 agenteIA_TRM/
 │
-├── .env                      ← creado en el paso 5 (no está en git)
+├── .env                      ← claves de ejemplo en el repo; reemplaza con las tuyas localmente
 ├── .gitignore                ← protege .env y otros archivos sensibles
 ├── requirements.txt          ← dependencias Python
 │
