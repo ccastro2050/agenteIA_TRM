@@ -157,14 +157,28 @@ La API queda disponible en:
 ### Paso 5 — Hacer una consulta de prueba
 
 ```bash
-# Con curl:
+# Con Python (LangChain):
+python agente_langchain.py --pregunta "¿Cuánto está el dólar hoy en Colombia?"
+
+# Con Python (LangGraph):
+python agente_langgraph.py --pregunta "¿Cuál fue la inflación en 2024?"
+```
+
+```powershell
+# Con PowerShell (Windows):
+Invoke-RestMethod -Method Post -Uri http://localhost:8001/consulta `
+  -ContentType "application/json" `
+  -Body '{"pregunta": "cuanto esta el dolar?"}'
+```
+
+```bash
+# Con curl (Linux / macOS / Git Bash):
 curl -X POST http://localhost:8001/consulta \
      -H "Content-Type: application/json" \
-     -d '{"pregunta": "¿Cuánto está el dólar hoy en Colombia?"}'
-
-# Con Python:
-python agente_langchain.py --pregunta "¿Cuál fue la inflación en 2024?"
+     -d '{"pregunta": "cuanto esta el dolar?"}'
 ```
+
+O directamente desde el navegador: **http://localhost:8001/ui** → tab Chat.
 
 ### Paso 6 — Ver métricas operativas
 
