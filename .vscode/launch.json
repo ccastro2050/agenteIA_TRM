@@ -1,0 +1,58 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "▶ API FastAPI (puerto 8001)",
+      "type": "python",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "▶ Agente LangChain (CLI)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/agente_langchain.py",
+      "args": ["--pregunta", "¿Cuánto está el dólar hoy en Colombia?"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "▶ Agente LangGraph (CLI)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/agente_langgraph.py",
+      "args": ["--pregunta", "¿Cuál fue la inflación en Colombia en 2024?"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "▶ Preparar base vectorial (pgvector)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/preparar_base.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "▶ Exportar CSVs de métricas",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/exportar_dashboard.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "▶ Generar n8n JSON + PNG grafo",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/langgraph_to_n8n.py",
+      "args": ["--grafo"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ]
+}

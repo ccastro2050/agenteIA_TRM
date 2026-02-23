@@ -199,6 +199,41 @@ python langgraph_to_n8n.py --grafo    # también genera grafo_produccion.png
 
 ---
 
+## Ejecución desde VSCode
+
+El proyecto incluye configuraciones de lanzamiento listas en `.vscode/launch.json`.
+
+### Cómo usar el botón ▶
+
+1. Abrir VSCode en la carpeta `agenteIA_TRM/`
+2. Ir al panel **Run and Debug** (`Ctrl+Shift+D`)
+3. En el desplegable superior, seleccionar la configuración deseada:
+
+| Configuración | Qué hace |
+|---|---|
+| `▶ API FastAPI (puerto 8001)` | Inicia el servidor con `--reload` |
+| `▶ Agente LangChain (CLI)` | Lanza una pregunta directa por terminal |
+| `▶ Agente LangGraph (CLI)` | Igual pero con el agente supervisor |
+| `▶ Preparar base vectorial` | Indexa los documentos en pgvector |
+| `▶ Exportar CSVs de métricas` | Genera los 4 CSVs en `resultados/` |
+| `▶ Generar n8n JSON + PNG grafo` | Crea el workflow y el PNG del grafo |
+
+4. Presionar `F5` o el botón ▶ verde
+
+### Terminal integrado (alternativa rápida)
+
+Abre el terminal con `` Ctrl+` `` y ejecuta directamente:
+
+```bash
+# Terminal 1 — servidor (déjalo corriendo)
+python -m uvicorn main:app --port 8001 --reload
+
+# Terminal 2 — prueba rápida (abre otro con el botón +)
+python agente_langchain.py --pregunta "cuanto esta el dolar?"
+```
+
+---
+
 ## Cambiar proveedor LLM
 
 Edita `.env`:
