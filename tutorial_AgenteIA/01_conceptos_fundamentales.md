@@ -215,7 +215,47 @@ Todos los conceptos anteriores se integran en una sola plataforma:
 
 ---
 
-## 10. Resumen de Tecnologías
+## 10. n8n — Automatización de flujos
+
+**n8n** es una herramienta de automatización de flujos de trabajo (*workflow automation*).
+Funciona de manera visual: el usuario conecta bloques (nodos) con flechas para definir
+qué debe pasar cuando ocurre un evento.
+
+```
+[Evento disparador]  →  [Paso 1]  →  [Paso 2]  →  [Acción final]
+
+Ejemplo:
+[Nuevo correo recibido]  →  [Llamar al agente IA]  →  [Enviar respuesta por WhatsApp]
+```
+
+### ¿Qué tiene que ver n8n con este proyecto?
+
+El agente de IA de este proyecto expone una API REST. Eso significa que cualquier
+sistema externo puede invocarlo enviando una petición HTTP. n8n puede hacer eso
+de forma visual, sin escribir código.
+
+Casos de uso reales:
+
+| Disparador en n8n | Acción | Resultado |
+|---|---|---|
+| Formulario web enviado | Llama a `/consulta` con la pregunta | El agente responde automáticamente |
+| Correo electrónico recibido | Extrae la pregunta y llama a `/consulta` | La respuesta se reenvía por correo |
+| Scheduler (cada hora) | Llama a `/metricas` | Envía reporte de uso a Slack |
+| Webhook de WhatsApp | Llama a `/consulta` | El agente responde por WhatsApp |
+
+### ¿Cómo se integra con este proyecto?
+
+El proyecto genera automáticamente un archivo JSON (`agente_produccion_n8n.json`)
+que describe el flujo para importar en n8n. El usuario lo descarga desde la
+interfaz web (pestaña n8n), lo importa en su instancia de n8n y queda listo
+para automatizar consultas al agente.
+
+> **Referencia:** n8n Documentation. https://docs.n8n.io/
+> **Referencia:** n8n — Source available workflow automation. https://github.com/n8n-io/n8n
+
+---
+
+## 11. Resumen de Tecnologías
 
 | Componente | Tecnología | Versión mínima |
 |---|---|---|
@@ -229,6 +269,7 @@ Todos los conceptos anteriores se integran en una sola plataforma:
 | Interfaz web | Bootstrap | 5.3 |
 | Configuración dinámica | SQLite | Python stdlib |
 | Validación de datos | Pydantic | 2.x |
+| Automatización de flujos | n8n | 1.x |
 
 ---
 
@@ -257,6 +298,10 @@ Todos los conceptos anteriores se integran en una sola plataforma:
 11. DeepSeek AI. (2024). *DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model*. arXiv:2405.04434. https://arxiv.org/abs/2405.04434
 
 12. Ramírez, S. (2018). *FastAPI*. GitHub. https://github.com/tiangolo/fastapi
+
+13. n8n Documentation. https://docs.n8n.io/
+
+14. n8n — Source available workflow automation. GitHub. https://github.com/n8n-io/n8n
 
 ---
 
