@@ -26,11 +26,12 @@ load_dotenv(dotenv_path=_env_path)
 # Directorios — todo dentro de agenteIA_TRM/
 # ---------------------------------------------------------------------------
 
-BASE_DIR    : Path = Path(__file__).parent
-DATOS_DIR   : Path = BASE_DIR / "datos"
-DOCS_DIR    : Path = BASE_DIR / "documentos"
-LOGS_DIR    : Path = BASE_DIR / "logs"
-SQLITE_PATH : Path = BASE_DIR / "agente_config.db"   # prompts + config UI
+BASE_DIR       : Path = Path(__file__).parent
+DATOS_DIR      : Path = BASE_DIR / "datos"
+DOCS_DIR       : Path = BASE_DIR / "documentos"
+LOGS_DIR       : Path = BASE_DIR / "logs"
+RESULTADOS_DIR : Path = BASE_DIR / "resultados"
+SQLITE_PATH    : Path = BASE_DIR / "agente_config.db"   # prompts + config UI
 
 
 # ---------------------------------------------------------------------------
