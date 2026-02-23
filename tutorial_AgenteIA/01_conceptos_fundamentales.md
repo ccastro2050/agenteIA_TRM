@@ -339,6 +339,39 @@ El flujo es:
 `config.py` ya está escrito. El usuario **no necesita modificarlo**.
 Solo hay que llenar correctamente el `.env`.
 
+### ¿Por qué no poner las claves directamente en `config.py`?
+
+Es técnicamente posible escribir las claves directo en `config.py`:
+
+```python
+# ❌ NO recomendado para repositorios públicos
+OPENAI_API_KEY = "sk-proj-XXXXXXXX..."
+```
+
+Incluso usando `_get()` con un valor por defecto:
+
+```python
+# ❌ Tampoco recomendado — la clave queda expuesta en el código
+OPENAI_API_KEY = _get("OPENAI_API_KEY", "sk-proj-XXXXXXXX...")
+```
+
+Esto funciona en un entorno local o de enseñanza donde el repositorio
+es privado. Pero **en un repositorio público como este proyecto**, si
+la clave queda en `config.py` y se hace `git push`, cualquier persona
+en internet puede verla y usarla, generando cargos en la cuenta del
+propietario.
+
+La regla es simple:
+
+```
+Repositorio privado / uso local  →  aceptable como fallback en config.py
+Repositorio público              →  las claves SOLO en .env, nunca en código
+```
+
+En este proyecto (`agenteIA_TRM`) el repositorio es público, por lo
+tanto las claves van **únicamente** en `.env`, que está protegido por
+`.gitignore`.
+
 ### Cómo crear el archivo `.env`
 
 El archivo `.env` guarda todas las claves y la configuración inicial del
