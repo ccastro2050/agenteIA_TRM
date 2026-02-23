@@ -1,0 +1,14 @@
+kpi,valor,formato,descripcion
+total_consultas,15,numero,Total consultas procesadas
+latencia_p50_ms,12952.0,ms,Latencia mediana (p50)
+latencia_p95_ms,17401.0,ms,Latencia p95 (95% de requests)
+sla_cumplimiento_pct,100.0,porcentaje,% consultas dentro de SLA (30s)
+costo_total_usd,0.0606,USD,Costo total acumulado
+costo_promedio_usd,0.004042,USD,Costo promedio por consulta
+llm_provider,deepseek,texto,Proveedor LLM activo
+llm_model,deepseek-chat,texto,Modelo LLM activo
+vector_store,pgvector,texto,Backend de vector store
+api_version,1.0.0,texto,Versión de la API
+langsmith_proyecto,agenteIA-TRM,texto,Proyecto LangSmith
+tokens_totales,4640,numero,Total tokens consumidos
+generado_en,2026-02-22 21:08,fecha,Fecha de generación del reporte

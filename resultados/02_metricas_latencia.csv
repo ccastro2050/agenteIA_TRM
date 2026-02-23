@@ -1,0 +1,11 @@
+metrica,valor,descripcion
+latencia_min_ms,4371.5,Latencia mínima registrada
+latencia_p25_ms,7086.2,Percentil 25 (cuartil inferior)
+latencia_p50_ms,12952.0,Mediana (p50) — latencia típica
+latencia_p75_ms,15332.0,Percentil 75 (cuartil superior)
+latencia_p95_ms,17401.0,Percentil 95 — casos lentos
+latencia_p99_ms,17401.0,Percentil 99 — casos extremos
+latencia_max_ms,17401.0,Latencia máxima registrada
+latencia_promedio_ms,11404.6,Promedio aritmético
+sla_target_ms,30000,SLA objetivo (30 segundos)
+sla_cumplimiento_pct,100.0,% consultas dentro del SLA

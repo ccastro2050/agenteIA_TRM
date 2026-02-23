@@ -1,0 +1,16 @@
+timestamp,pregunta,latencia_ms,tokens_in,tokens_out,tokens_total,costo_usd,modelo
+2024-12-01T09:00:00,¿Cuánto está el dólar hoy?,12952.0,31,339,370,0.005178,deepseek/deepseek-chat
+2024-12-02T10:00:00,¿Cuál fue la inflación en 2024?,7850.4,44,185,229,0.002907,deepseek/deepseek-chat
+2024-12-03T11:00:00,¿Cómo está la balanza comercial?,14310.6,73,339,412,0.005304,deepseek/deepseek-chat
+2024-12-04T12:00:00,¿Qué sectores exportan más?,16490.5,35,301,336,0.00462,deepseek/deepseek-chat
+2024-12-05T13:00:00,¿Cuál es el PIB de Colombia?,9906.9,31,173,204,0.002688,deepseek/deepseek-chat
+2024-12-06T14:00:00,¿Cuánto está el dólar hoy?,7060.9,62,304,366,0.004746,deepseek/deepseek-chat
+2024-12-07T15:00:00,¿Cuál fue la inflación en 2024?,4371.5,42,333,375,0.005121,deepseek/deepseek-chat
+2024-12-08T16:00:00,¿Cómo está la balanza comercial?,13098.4,64,257,321,0.004047,deepseek/deepseek-chat
+2024-12-09T09:00:00,¿Qué sectores exportan más?,7086.2,67,221,288,0.003516,deepseek/deepseek-chat
+2024-12-10T10:00:00,¿Cuál es el PIB de Colombia?,15332.0,30,344,374,0.00525,deepseek/deepseek-chat
+2024-12-11T11:00:00,¿Cuánto está el dólar hoy?,15281.5,74,258,332,0.004092,deepseek/deepseek-chat
+2024-12-12T12:00:00,¿Cuál fue la inflación en 2024?,8763.5,39,205,244,0.003192,deepseek/deepseek-chat
+2024-12-13T13:00:00,¿Cómo está la balanza comercial?,17401.0,51,176,227,0.002793,deepseek/deepseek-chat
+2024-12-14T14:00:00,¿Qué sectores exportan más?,5298.4,36,241,277,0.003723,deepseek/deepseek-chat
+2024-12-15T15:00:00,¿Cuál es el PIB de Colombia?,15864.9,68,217,285,0.003459,deepseek/deepseek-chat

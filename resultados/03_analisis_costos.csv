@@ -1,0 +1,11 @@
+categoria,metrica,valor,unidad,descripcion
+Real,total_consultas,15,consultas,Total consultas registradas
+Real,costo_total_usd,0.0606,USD,Costo total acumulado
+Real,costo_promedio_usd,0.004042,USD/consulta,Costo promedio por consulta
+Real,tokens_promedio,309.0,tokens,Tokens promedio por consulta
+Proveedor,precio_input_por_1k,0.00014,USD/1K tokens,Precio input — deepseek
+Proveedor,precio_output_por_1k,0.00028,USD/1K tokens,Precio output — deepseek
+Proyeccion,costo_100_consultas_usd,0.4042,USD,Costo estimado por 100 consultas/día
+Proyeccion,costo_1000_consultas_usd,4.04,USD,Costo estimado por 1000 consultas/mes
+Proyeccion,costo_mensual_bajo_usd,2.02,USD/mes,Proyección mensual (500 consultas/mes)
+Proyeccion,costo_mensual_alto_usd,20.21,USD/mes,Proyección mensual (5000 consultas/mes)
