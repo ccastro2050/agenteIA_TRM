@@ -318,6 +318,27 @@ funciones a la vez.
 - Formato: `sk-...` (32 caracteres hexadecimales)
 - Costo: pago por uso · deepseek-chat ~$0.14 / millón de tokens de entrada
 
+### `.env` y `config.py` — cuál es el rol de cada uno
+
+Estos dos archivos trabajan juntos pero cada uno tiene una
+responsabilidad distinta:
+
+| Archivo | ¿Quién lo toca? | ¿Para qué sirve? |
+|---------|----------------|-----------------|
+| `.env` | **El usuario** | Guardar las claves y valores propios (API keys, contraseñas, puertos) |
+| `config.py` | **El código** (no se modifica) | Leer el `.env` automáticamente y exponer los valores al resto del proyecto |
+
+El flujo es:
+
+```
+.env  →  config.py (load_dotenv)  →  resto del proyecto
+         lee y valida                usa config.OPENAI_API_KEY,
+         los valores                 config.LLM_MODEL, etc.
+```
+
+`config.py` ya está escrito. El usuario **no necesita modificarlo**.
+Solo hay que llenar correctamente el `.env`.
+
 ### Cómo crear el archivo `.env`
 
 El archivo `.env` guarda todas las claves y la configuración inicial del
