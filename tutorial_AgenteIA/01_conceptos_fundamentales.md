@@ -270,7 +270,75 @@ Una vez configurada, todas las consultas quedan trazadas automáticamente.
 
 ---
 
-## 11. n8n — Automatización de flujos
+## 11. API Keys — Claves de acceso a los servicios
+
+Una **API key** (clave de API) es una cadena de texto que identifica y
+autoriza a una aplicación para usar un servicio externo. Funciona como
+una contraseña: sin ella, el servicio rechaza las peticiones.
+
+En este proyecto se usan servicios de IA que cobran por uso. Cada
+proveedor entrega una clave distinta.
+
+### ¿Cuántas claves se necesitan?
+
+**Con una sola clave de OpenAI es suficiente para arrancar el proyecto.**
+
+Esto se debe a que los **embeddings** (la conversión de texto a vectores
+para pgvector) se hacen exclusivamente con el modelo
+`text-embedding-3-small` de OpenAI. No existe en este proyecto una
+alternativa para esa función.
+
+El LLM que responde las preguntas sí es intercambiable: puede ser
+OpenAI, Anthropic o DeepSeek. Con la clave de OpenAI se cubren ambas
+funciones a la vez.
+
+| Clave | Para qué se usa | ¿Obligatoria? |
+|-------|----------------|---------------|
+| **OpenAI** | Embeddings (siempre) + LLM GPT (opcional) | **Sí** |
+| **Anthropic** | LLM Claude (opcional) | No |
+| **DeepSeek** | LLM DeepSeek (opcional) | No |
+
+### Cómo obtener cada clave
+
+**OpenAI** (obligatoria)
+- Registro: https://platform.openai.com/signup
+- Claves: https://platform.openai.com/api-keys
+- Formato: `sk-proj-...`
+- Costo: pago por uso · los embeddings cuestan ~$0.02 por millón de tokens
+
+**Anthropic** (opcional)
+- Registro: https://console.anthropic.com
+- Claves: https://console.anthropic.com/settings/keys
+- Formato: `sk-ant-api03-...`
+- Costo: pago por uso · Claude Sonnet ~$3 / millón de tokens de entrada
+
+**DeepSeek** (opcional)
+- Registro: https://platform.deepseek.com
+- Claves: https://platform.deepseek.com/api-keys
+- Formato: `sk-...` (32 caracteres hexadecimales)
+- Costo: pago por uso · deepseek-chat ~$0.14 / millón de tokens de entrada
+
+### ¿Cómo se configuran en el proyecto?
+
+Las claves se guardan en el archivo `.env` en la raíz del proyecto:
+
+```
+OPENAI_API_KEY=sk-proj-...        ← obligatoria
+ANTHROPIC_API_KEY=sk-ant-...      ← solo si se usa Claude
+DEEPSEEK_API_KEY=sk-...           ← solo si se usa DeepSeek
+```
+
+También se pueden cambiar en cualquier momento desde la interfaz web
+(sidebar → campo API Key) sin necesidad de tocar el archivo `.env` ni
+reiniciar el servidor.
+
+> **Importante:** nunca compartir las API keys ni subirlas a un
+> repositorio público. El archivo `.env` está incluido en `.gitignore`
+> para evitar que se publiquen accidentalmente.
+
+---
+
+## 12. n8n — Automatización de flujos
 
 **n8n** es una herramienta de automatización de flujos de trabajo (*workflow automation*).
 Funciona de manera visual: el usuario conecta bloques (nodos) con flechas para definir
@@ -310,7 +378,7 @@ para automatizar consultas al agente.
 
 ---
 
-## 11. Resumen de Tecnologías
+## 13. Resumen de Tecnologías
 
 | Componente | Tecnología | Versión mínima |
 |---|---|---|
