@@ -318,19 +318,103 @@ funciones a la vez.
 - Formato: `sk-...` (32 caracteres hexadecimales)
 - Costo: pago por uso · deepseek-chat ~$0.14 / millón de tokens de entrada
 
-### ¿Cómo se configuran en el proyecto?
+### Cómo crear el archivo `.env`
 
-Las claves se guardan en el archivo `.env` en la raíz del proyecto:
+El archivo `.env` guarda todas las claves y la configuración inicial del
+proyecto. Se crea **una sola vez** en la carpeta raíz del proyecto.
+
+**Paso 1 — Crear el archivo**
+
+En la carpeta raíz del proyecto (`agenteIA_TRM/`), crear un archivo
+de texto llamado exactamente `.env` (sin extensión adicional).
+
+Desde la terminal:
+
+```bash
+# Windows (PowerShell o CMD)
+type nul > .env
+
+# O simplemente crear el archivo desde el editor de texto (VS Code, Notepad++, etc.)
+# Archivo nuevo → guardar como ".env" en la carpeta raíz del proyecto
+```
+
+**Paso 2 — Escribir el contenido**
+
+Copiar el siguiente bloque completo en el archivo `.env` y reemplazar
+los valores entre `< >` con los datos reales:
 
 ```
-OPENAI_API_KEY=sk-proj-...        ← obligatoria
-ANTHROPIC_API_KEY=sk-ant-...      ← solo si se usa Claude
-DEEPSEEK_API_KEY=sk-...           ← solo si se usa DeepSeek
+# ── LLM principal ─────────────────────────────────────────────
+LLM_PROVIDER=openai
+LLM_MODEL=gpt-4o-mini
+
+# ── Claves API ─────────────────────────────────────────────────
+OPENAI_API_KEY=<pegar aquí la clave de OpenAI>
+ANTHROPIC_API_KEY=<pegar aquí la clave de Anthropic, o dejar vacío>
+DEEPSEEK_API_KEY=<pegar aquí la clave de DeepSeek, o dejar vacío>
+
+# ── Embeddings (no cambiar) ─────────────────────────────────────
+EMBEDDING_PROVIDER=openai
+EMBEDDING_MODEL=text-embedding-3-small
+
+# ── Vector Store ───────────────────────────────────────────────
+VECTOR_STORE_PROVIDER=pgvector
+
+# ── API REST ───────────────────────────────────────────────────
+HOST=0.0.0.0
+PORT=8001
+
+# ── LangSmith (opcional) ───────────────────────────────────────
+LANGSMITH_API_KEY=<pegar aquí la clave de LangSmith, o dejar vacío>
+LANGSMITH_PROJECT=agenteIA-TRM
+
+# ── pgvector (PostgreSQL) ──────────────────────────────────────
+PG_HOST=localhost
+PG_PORT=5432
+PG_DATABASE=bdvector
+PG_USER=postgres
+PG_PASSWORD=<contraseña de PostgreSQL>
+PG_COLLECTION=dane_reportes
 ```
 
-También se pueden cambiar en cualquier momento desde la interfaz web
-(sidebar → campo API Key) sin necesidad de tocar el archivo `.env` ni
-reiniciar el servidor.
+**Ejemplo con solo la clave de OpenAI** (configuración mínima):
+
+```
+LLM_PROVIDER=openai
+LLM_MODEL=gpt-4o-mini
+OPENAI_API_KEY=sk-proj-XXXXXXXXXXXXXXXXXXXXXXXX
+ANTHROPIC_API_KEY=
+DEEPSEEK_API_KEY=
+EMBEDDING_PROVIDER=openai
+EMBEDDING_MODEL=text-embedding-3-small
+VECTOR_STORE_PROVIDER=pgvector
+HOST=0.0.0.0
+PORT=8001
+LANGSMITH_API_KEY=
+LANGSMITH_PROJECT=agenteIA-TRM
+PG_HOST=localhost
+PG_PORT=5432
+PG_DATABASE=bdvector
+PG_USER=postgres
+PG_PASSWORD=postgres
+PG_COLLECTION=dane_reportes
+```
+
+**Paso 3 — Verificar que `.env` no se sube a GitHub**
+
+El archivo `.gitignore` del proyecto ya incluye `.env`. Para confirmar:
+
+```bash
+git status
+# El archivo .env NO debe aparecer en la lista
+```
+
+Si aparece, detener todo y verificar que el `.gitignore` esté bien
+configurado antes de hacer cualquier commit.
+
+También se pueden cambiar el proveedor y las claves en cualquier momento
+desde la interfaz web (sidebar → campo API Key) sin necesidad de editar
+el `.env` ni reiniciar el servidor.
 
 > **Importante:** nunca compartir las API keys ni subirlas a un
 > repositorio público. El archivo `.env` está incluido en `.gitignore`
