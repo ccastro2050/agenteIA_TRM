@@ -1,7 +1,9 @@
-# Claves y configuración sensible — NUNCA subir al repositorio
-.env
+# Claves y configuración sensible
+# .env y .env.example SÍ se suben (contienen claves de ejemplo, no reales)
+# Para probar: edita .env con tus claves reales pero NO hagas git add .env
 *.env
 .env.*
+!.env
 !.env.example
 
 # Base de datos local (se genera al ejecutar el proyecto)

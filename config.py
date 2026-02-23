@@ -1,12 +1,13 @@
 """
 config.py — Configuración del proyecto agente_IA_TRM
 =====================================================
-Agente de Analítica de Datos con pgvector · USB Medellín
+Agente de Analítica de Datos · USB Medellín
 
-Lee todas las variables sensibles desde el archivo .env.
-Nunca se hardcodean claves API en este archivo.
+Proyecto 100% autónomo — no depende de ningún otro capítulo.
+Incluye su propio agente ReAct, herramientas, documentos y vector store.
 
 Vector store soportado: pgvector (PostgreSQL + extensión vector)
+Base de datos operacional: SQLite (prompts, configuración, historial)
 """
 
 import os
@@ -22,14 +23,14 @@ load_dotenv(dotenv_path=_env_path)
 
 
 # ---------------------------------------------------------------------------
-# Directorios
+# Directorios — todo dentro de agenteIA_TRM/
 # ---------------------------------------------------------------------------
 
-BASE_DIR       : Path = Path(__file__).parent
-DATOS_DIR      : Path = BASE_DIR / "datos"
-DOCS_DIR       : Path = BASE_DIR / "documentos"
-LOGS_DIR       : Path = BASE_DIR / "logs"
-SQLITE_PATH    : Path = BASE_DIR / "agente_config.db"   # prompts + config UI
+BASE_DIR    : Path = Path(__file__).parent
+DATOS_DIR   : Path = BASE_DIR / "datos"
+DOCS_DIR    : Path = BASE_DIR / "documentos"
+LOGS_DIR    : Path = BASE_DIR / "logs"
+SQLITE_PATH : Path = BASE_DIR / "agente_config.db"   # prompts + config UI
 
 
 # ---------------------------------------------------------------------------
@@ -71,17 +72,17 @@ _PROVIDER_BASE_URLS: dict[str, str] = {
 SUPPORTED_PROVIDERS = list(_PROVIDER_BASE_URLS.keys())
 
 _API_KEYS: dict[str, str] = {
-    "anthropic": _get("ANTHROPIC_API_KEY"),
-    "openai":    _get("OPENAI_API_KEY"),
-    "deepseek":  _get("DEEPSEEK_API_KEY"),
+    "anthropic": _get("ANTHROPIC_API_KEY", "sk-ant-api03-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-XXXXXXXX"),
+    "openai":    _get("OPENAI_API_KEY",    "sk-proj-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"),
+    "deepseek":  _get("DEEPSEEK_API_KEY",  "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"),
     "ollama":    "ollama",
-    "qwen":      _get("QWEN_API_KEY"),
-    "zhipu":     _get("ZHIPU_API_KEY"),
-    "moonshot":  _get("MOONSHOT_API_KEY"),
+    "qwen":      _get("QWEN_API_KEY",      ""),
+    "zhipu":     _get("ZHIPU_API_KEY",     ""),
+    "moonshot":  _get("MOONSHOT_API_KEY",  ""),
 }
 
-LLM_PROVIDER: str = _get("LLM_PROVIDER", "openai").lower()
-LLM_MODEL:    str = _get("LLM_MODEL",    "gpt-4o-mini")
+LLM_PROVIDER: str = _get("LLM_PROVIDER", "deepseek").lower()
+LLM_MODEL:    str = _get("LLM_MODEL",    "deepseek-chat")
 LLM_API_KEY:  str = _API_KEYS.get(LLM_PROVIDER, "")
 _custom_base  = _get("LLM_BASE_URL")
 LLM_BASE_URL: str = _custom_base if _custom_base else _PROVIDER_BASE_URLS.get(LLM_PROVIDER, "")
@@ -97,9 +98,9 @@ COSTOS_POR_PROVEEDOR: dict[str, dict[str, float]] = {
     "openai":    {"input": 0.00015,  "output": 0.0006},   # gpt-4o-mini
     "deepseek":  {"input": 0.00014,  "output": 0.00028},  # deepseek-chat
     "ollama":    {"input": 0.0,      "output": 0.0},      # local — sin costo
-    "qwen":      {"input": 0.0005,   "output": 0.0015},
-    "zhipu":     {"input": 0.0007,   "output": 0.0007},
-    "moonshot":  {"input": 0.001,    "output": 0.003},
+    "qwen":      {"input": 0.0005,   "output": 0.0015},   # qwen-turbo aprox.
+    "zhipu":     {"input": 0.0007,   "output": 0.0007},   # glm-4-flash aprox.
+    "moonshot":  {"input": 0.001,    "output": 0.003},    # moonshot-v1-8k aprox.
 }
 
 
@@ -107,17 +108,25 @@ COSTOS_POR_PROVEEDOR: dict[str, dict[str, float]] = {
 # LangSmith — observabilidad
 # ---------------------------------------------------------------------------
 
-LANGSMITH_API_KEY : str  = _get("LANGSMITH_API_KEY")
+LANGSMITH_API_KEY : str  = _get("LANGSMITH_API_KEY",  "lsv2_pt_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX_XXXXXXXXXXXXXXXX")
 LANGSMITH_PROJECT : str  = _get("LANGSMITH_PROJECT",  "agenteIA-TRM")
 LANGSMITH_ENABLED : bool = bool(LANGSMITH_API_KEY)
 
 
 # ---------------------------------------------------------------------------
-# Embeddings
+# Embeddings — para el vector store
 # ---------------------------------------------------------------------------
 
+_EMBEDDING_DEFAULTS: dict[str, str] = {
+    "openai":      "text-embedding-3-small",
+    "ollama":      "nomic-embed-text",
+    "huggingface": "paraphrase-multilingual-MiniLM-L12-v2",
+}
 EMBEDDING_PROVIDER: str = _get("EMBEDDING_PROVIDER", "openai").lower()
-EMBEDDING_MODEL:    str = _get("EMBEDDING_MODEL",    "text-embedding-3-small")
+EMBEDDING_MODEL:    str = _get(
+    "EMBEDDING_MODEL",
+    _EMBEDDING_DEFAULTS.get(EMBEDDING_PROVIDER, "text-embedding-3-small"),
+)
 
 # RAG — fragmentos a recuperar por búsqueda
 RETRIEVAL_K: int = int(_get("RETRIEVAL_K", "4"))
@@ -128,16 +137,17 @@ CHUNK_OVERLAP: int = int(_get("CHUNK_OVERLAP", "100"))
 
 
 # ---------------------------------------------------------------------------
-# Vector Store — pgvector
+# Vector Store — pgvector (único backend soportado)
 # ---------------------------------------------------------------------------
 
 VECTOR_STORE_PROVIDER: str = "pgvector"
 
+# pgvector (PostgreSQL + extensión vector)
 PG_HOST:       str = _get("PG_HOST",       "localhost")
 PG_PORT:       int = int(_get("PG_PORT",   "5432"))
 PG_DATABASE:   str = _get("PG_DATABASE",   "bdvector")
 PG_USER:       str = _get("PG_USER",       "postgres")
-PG_PASSWORD:   str = _get("PG_PASSWORD",   "")
+PG_PASSWORD:   str = _get("PG_PASSWORD",   "postgres")
 PG_COLLECTION: str = _get("PG_COLLECTION", "dane_reportes")
 
 
@@ -162,7 +172,7 @@ MODELOS_POR_PROVEEDOR: dict[str, list[str]] = {
 
 def _make_llm(provider: str, model: str, api_key: str, base_url: str,
               temperature: float = 0.2, max_tokens: int = 2048):
-    """Fábrica común de LLMs."""
+    """Fábrica común de LLMs — mismo patrón que caps 1-7."""
     if provider == "anthropic":
         from langchain_anthropic import ChatAnthropic
         return ChatAnthropic(model=model, api_key=api_key,
@@ -189,6 +199,7 @@ def crear_llm_dinamico(temperature: float = 0.2):
     """
     LLM que lee proveedor/modelo/api_key desde SQLite (UI) primero.
     Si no hay nada en SQLite, cae de vuelta a los valores del .env.
+
     Permite cambiar el modelo desde la interfaz web sin reiniciar la API.
     """
     try:
@@ -233,6 +244,8 @@ def validate():
     print(f"[CONFIG] Base de datos    : {PG_DATABASE} en {PG_HOST}:{PG_PORT}")
     print(f"[CONFIG] API              : {HOST}:{PORT}  v{API_VERSION}")
     print(f"[CONFIG] LangSmith        : {'habilitado' if LANGSMITH_ENABLED else 'deshabilitado'}")
+    if LANGSMITH_ENABLED:
+        print(f"[CONFIG]   Proyecto       : {LANGSMITH_PROJECT}")
 
     csvs = list(DATOS_DIR.glob("*.csv"))
     txts = list(DOCS_DIR.glob("*.txt"))
