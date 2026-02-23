@@ -215,7 +215,62 @@ Todos los conceptos anteriores se integran en una sola plataforma:
 
 ---
 
-## 10. n8n — Automatización de flujos
+## 10. LangSmith — Trazabilidad y observabilidad
+
+Cuando un agente de IA falla o da una respuesta inesperada, es difícil
+saber exactamente qué ocurrió internamente: qué tool invocó, qué le
+respondió, cómo razonó el LLM. **LangSmith** resuelve ese problema.
+
+**LangSmith** es una plataforma de observabilidad para aplicaciones
+construidas con LangChain y LangGraph. Registra cada paso de la
+ejecución del agente y los muestra en una interfaz visual.
+
+### ¿Qué registra LangSmith?
+
+Para cada consulta que llega al agente, LangSmith guarda una **traza**
+(*trace*) con todos los pasos internos:
+
+```
+Consulta: "¿Cuál fue la inflación en 2024?"
+│
+├── LLM Supervisor
+│   ├── Input:  "Analiza la pregunta y elige el agente..."
+│   └── Output: "Ruta: RAG"
+│
+├── Agente RAG
+│   ├── Tool: buscar_documentos_dane("inflación 2024")
+│   │   └── Resultado: 4 fragmentos del boletín IPC
+│   └── LLM genera respuesta con esos fragmentos
+│
+└── Sintetizador
+    ├── Input:  fragmentos + pregunta
+    └── Output: "La inflación en 2024 fue del 5,17%..."
+
+Métricas: 11.4 seg · 318 tokens · $0.000089 USD
+```
+
+### ¿Para qué sirve en la práctica?
+
+| Situación | Sin LangSmith | Con LangSmith |
+|-----------|--------------|---------------|
+| El agente da una respuesta incorrecta | No se sabe por qué | Se ve exactamente qué tool invocó y qué datos usó |
+| La respuesta tarda demasiado | No se sabe en qué paso | Se ve el tiempo de cada nodo del grafo |
+| Se quiere mejorar un prompt | Hay que adivinar el efecto | Se comparan trazas antes y después del cambio |
+| Se quiere auditar el uso | Solo hay logs de texto | Interfaz visual con filtros por fecha, modelo y proyecto |
+
+### ¿Cómo se activa?
+
+Se necesita una cuenta gratuita en https://smith.langchain.com y una
+clave API. En este proyecto se configura desde la interfaz web
+(sidebar → sección LangSmith) o directamente en el archivo `.env`.
+Una vez configurada, todas las consultas quedan trazadas automáticamente.
+
+> **Referencia:** LangSmith Documentation. https://docs.smith.langchain.com/
+> **Referencia:** LangSmith — Observe and evaluate your LLM applications. https://smith.langchain.com/
+
+---
+
+## 11. n8n — Automatización de flujos
 
 **n8n** es una herramienta de automatización de flujos de trabajo (*workflow automation*).
 Funciona de manera visual: el usuario conecta bloques (nodos) con flechas para definir
@@ -270,6 +325,7 @@ para automatizar consultas al agente.
 | Configuración dinámica | SQLite | Python stdlib |
 | Validación de datos | Pydantic | 2.x |
 | Automatización de flujos | n8n | 1.x |
+| Trazabilidad / observabilidad | LangSmith | — |
 
 ---
 
@@ -299,9 +355,11 @@ para automatizar consultas al agente.
 
 12. Ramírez, S. (2018). *FastAPI*. GitHub. https://github.com/tiangolo/fastapi
 
-13. n8n Documentation. https://docs.n8n.io/
+13. LangSmith Documentation. https://docs.smith.langchain.com/
 
-14. n8n — Source available workflow automation. GitHub. https://github.com/n8n-io/n8n
+14. n8n Documentation. https://docs.n8n.io/
+
+15. n8n — Source available workflow automation. GitHub. https://github.com/n8n-io/n8n
 
 ---
 
