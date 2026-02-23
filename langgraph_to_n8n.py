@@ -11,6 +11,7 @@ Genera el archivo langgraph_to_n8n.json con un workflow n8n que:
 Uso:
     python langgraph_to_n8n.py
     python langgraph_to_n8n.py --host http://mi-servidor:8001
+    python langgraph_to_n8n.py --grafo    # genera también grafo_produccion.png
 
 El archivo generado se puede ver e importar desde la UI en /ui → tab n8n.
 """
@@ -177,6 +178,11 @@ def main():
         default="http://localhost:8001",
         help="URL base de la API FastAPI (default: http://localhost:8001)",
     )
+    parser.add_argument(
+        "--grafo",
+        action="store_true",
+        help="Genera también grafo_produccion.png (requiere graphviz)",
+    )
     args = parser.parse_args()
 
     workflow = generar_workflow(host=args.host)
@@ -194,6 +200,17 @@ def main():
     print("  1. Abre la UI: http://localhost:8001/ui → tab n8n")
     print("  2. Haz clic en 'Cargar JSON' → 'Copiar'")
     print("  3. En n8n: menú ⋮ → Import from JSON (Ctrl+Shift+V)")
+
+    # Generar PNG del grafo si se solicita
+    if args.grafo:
+        try:
+            import pipeline
+            png = pipeline.construir_pipeline().get_graph().draw_mermaid_png()
+            with open("grafo_produccion.png", "wb") as f:
+                f.write(png)
+            print("Grafo generado: grafo_produccion.png")
+        except Exception as e:
+            print(f"No se pudo generar el grafo: {e}")
 
 
 if __name__ == "__main__":

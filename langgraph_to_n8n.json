@@ -1,0 +1,172 @@
+{
+  "name": "Agente IA TRM — 1.0.0",
+  "nodes": [
+    {
+      "id": "n1",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n2",
+      "name": "Definir pregunta",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        460,
+        300
+      ],
+      "parameters": {
+        "mode": "manual",
+        "fields": {
+          "values": [
+            {
+              "name": "pregunta",
+              "type": "stringValue",
+              "value": "¿Cuánto está el dólar hoy y cuál es la tendencia del TRM?"
+            },
+            {
+              "name": "backend",
+              "type": "stringValue",
+              "value": "langgraph"
+            },
+            {
+              "name": "temperatura",
+              "type": "numberValue",
+              "value": 0.2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Consultar Agente IA",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8001/consulta",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": {
+          "pregunta": "={{ $json.pregunta }}",
+          "backend": "={{ $json.backend }}",
+          "temperatura": "={{ $json.temperatura }}"
+        },
+        "options": {
+          "timeout": 120000
+        }
+      }
+    },
+    {
+      "id": "n4",
+      "name": "Extraer resultado",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        900,
+        300
+      ],
+      "parameters": {
+        "mode": "manual",
+        "fields": {
+          "values": [
+            {
+              "name": "respuesta",
+              "type": "stringValue",
+              "value": "={{ $json.respuesta }}"
+            },
+            {
+              "name": "latencia_ms",
+              "type": "numberValue",
+              "value": "={{ $json.latencia_ms }}"
+            },
+            {
+              "name": "tokens_total",
+              "type": "numberValue",
+              "value": "={{ $json.tokens_total }}"
+            },
+            {
+              "name": "costo_usd",
+              "type": "numberValue",
+              "value": "={{ $json.costo_estimado_usd }}"
+            },
+            {
+              "name": "modelo",
+              "type": "stringValue",
+              "value": "={{ $json.modelo }}"
+            },
+            {
+              "name": "backend_usado",
+              "type": "stringValue",
+              "value": "={{ $json.backend }}"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Definir pregunta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Definir pregunta": {
+      "main": [
+        [
+          {
+            "node": "Consultar Agente IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Agente IA": {
+      "main": [
+        [
+          {
+            "node": "Extraer resultado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "meta": {
+    "instanceId": "agenteIA-TRM",
+    "description": "Workflow generado automáticamente por langgraph_to_n8n.py — Agente IA TRM v1.0.0 · USB Medellín"
+  }
+}

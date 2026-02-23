@@ -27,8 +27,9 @@ build/
 venv/
 env/
 
-# Logs (se generan en tiempo de ejecución)
-logs/
+# Logs (se generan en tiempo de ejecución — solo .gitkeep para preservar la carpeta)
+logs/*
+!logs/.gitkeep
 
 # Archivos de sistema
 .DS_Store
